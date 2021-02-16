@@ -4,3 +4,5 @@ disk-images/
 gem5/
 gem5art-env/
 linux-kernels/
+results/
+packer

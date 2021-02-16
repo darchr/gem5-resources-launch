@@ -11,19 +11,15 @@ tests = ['boot-tests',
          'spec2006-tests',
          'spec2017-tests']
 
-packer_binaries = {
-    test: Artifact.registerArtifact(
-        command = '''wget https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_linux_amd64.zip;
-        unzip packer_1.6.5_linux_amd64.zip;
-        ''',
-        typ = 'binary',
-        name = 'packer',
-        path =  test+'/disk-image/packer',
-        cwd = test+'/disk-image',
-        documentation = 'Program to build disk images'
-    )
-    for test in tests
-}
+packer_binary = Artifact.registerArtifact(
+    command = '''wget https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_linux_amd64.zip;
+                 unzip packer_1.6.5_linux_amd64.zip;
+    ''',
+    typ = 'binary',
+    name = 'packer',
+    path =  'packer',
+    cwd = './',
+    documentation = 'Program to build disk images')
 
 # boot-tests
 boot_tests_disk_image = Artifact.registerArtifact(
@@ -85,7 +81,7 @@ spec2006_tests_disk_image = Artifact.registerArtifact(
     name = 'spec-2006-disk-image',
     cwd = 'gem5-resources/src/spec-2006/disk-image',
     path = 'disk-images/spec-2006',
-    inputs = [packer_binaries['spec2006-tests'], experiments_repo, m5_binary],
+    inputs = [packer_binary, experiments_repo, m5_binary],
     documentation = 'Ubuntu Server with SPEC 2006 installed, m5 binary installed and root auto login'
 )
 spec2006_tests_artifacts = SimpleNamespace(disk_image = spec2006_tests_disk_image)
@@ -99,7 +95,7 @@ spec2017_tests_disk_image = Artifact.registerArtifact(
     name = 'spec-2017-disk-image',
     cwd = 'gem5-resources/src/spec-2017/disk-image/',
     path = 'disk-images/spec20-17',
-    inputs = [packer_binaries['spec2017-tests'], experiments_repo, m5_binary],
+    inputs = [packer_binary, experiments_repo, m5_binary],
     documentation = 'Ubuntu Server with SPEC 2017 installed, m5 binary installed and root auto login'
 )
 spec2017_tests_artifacts = SimpleNamespace(disk_image = spec2017_tests_disk_image)
