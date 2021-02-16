@@ -6,3 +6,4 @@ gem5art-env/
 linux-kernels/
 results/
 packer
+run.sh

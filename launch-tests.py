@@ -10,6 +10,8 @@ import input_space
 from gem5art.artifact.artifact import Artifact
 from gem5art.run import gem5Run
 
+OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
+
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
 
@@ -100,7 +102,7 @@ def create_boot_tests_fs_run(params):
         'boot-exit;launched:02/16/2021;gem5art-status;v20.1.0.3', # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/boot-exit/configs/run_exit.py', # run_script
-        '/scr/hn/gem5-resources-launch/results/boot-exit/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, boot_type), # outdir
+        os.path.join(OUTPUT_FODLER, 'boot-exit/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, boot_type)), # outdir
         gem5_binaries[mem_sys], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
@@ -129,7 +131,7 @@ def create_npb_tests_fs_run(params):
             'npb;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
             get_gem5_binary_path(mem_sys), # gem5_binary
             '/scr/hn/gem5-resources-launch/gem5-resources/src/npb/configs/run_npb.py', # run_script
-            '/scr/hn/gem5-resources-launch/results/npb/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload), # outdir
+            os.path.join(OUTPUT_FOLDER, 'npb/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload)), # outdir
             gem5_binaries[mem_sys], # gem5_artifact
             gem5_repo, # gem5_git_artifact
             experiments_repo, # run_script_git_artifact
@@ -158,7 +160,7 @@ def create_gapbs_tests_fs_run(params):
         'gapbs;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/gapbs/configs/run_gapbs.py', # run_script
-        '/scr/hn/gem5-resources-launch/results/gapbs/{}/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, synthetic, graph), # outdir
+        os.path.join(OUTPUT_FOLDER, 'gapbs/{}/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, synthetic, graph)), # outdir
         gem5_binaries[mem_sys], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
@@ -193,7 +195,7 @@ def create_parsec_tests_fs_run(params):
         'parsec;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         run_script, # run_script
-        '/scr/hn/gem5-resources-launch/results/parsec/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, size), # outdir
+        os.path.join(OUTPUT_FOLDER, 'parsec/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, size)), # outdir
         gem5_binaries[mem_sys], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
@@ -219,7 +221,7 @@ def create_spec2006_tests_fs_run(params):
         'spec-2006;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
         get_gem5_binary_path('classic'), # gem5 binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/spec-2006/configs/run_spec.py', # run_script
-        '/scr/hn/gem5-resources-launch/results/spec-2006/{}/{}/{}/{}/'. format(kernel, cpu, workload, size), # outdir
+        os.path.join(OUTPUT_FOLDER, 'spec-2006/{}/{}/{}/{}/'. format(kernel, cpu, workload, size)), # outdir
         gem5_binaries['classic'], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
@@ -245,7 +247,7 @@ def create_spec2017_tests_fs_run(params):
         'spec-2017;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
         get_gem5_binary_path('classic'), # gem5_binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/spec-2017/configs/run_spec.py', # run_script
-        '/scr/hn/gem5-resources-launch/results/spec-2017/{}/{}/{}/{}/'. format(kernel, cpu, workload, size), # outdir
+        os.path.join(OUTPUT_FOLDER, 'spec-2017/{}/{}/{}/{}/'. format(kernel, cpu, workload, size)), # outdir
         gem5_binaries['classic'], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
@@ -282,6 +284,6 @@ if __name__ == "__main__":
             f.write(str(job))
             f.write("\n")
     jobs = get_jobs_iterator()
-    with mp.Pool(mp.cpu_count() // 4) as pool:
+    with mp.Pool(mp.cpu_count() // 3 * 2) as pool:
         pool.map(worker, jobs)
 
