@@ -94,7 +94,7 @@ spec2017_tests_disk_image = Artifact.registerArtifact(
     typ = 'disk image',
     name = 'spec-2017-disk-image',
     cwd = 'gem5-resources/src/spec-2017/disk-image/',
-    path = 'disk-images/spec20-17',
+    path = 'disk-images/spec-2017',
     inputs = [packer_binary, experiments_repo, m5_binary],
     documentation = 'Ubuntu Server with SPEC 2017 installed, m5 binary installed and root auto login'
 )
