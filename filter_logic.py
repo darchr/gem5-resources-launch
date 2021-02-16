@@ -1,0 +1,75 @@
+# for those combinations that are not being supported
+def universal_filter(params):
+    if 'cpu' in params and 'mem_sys' in params and params['cpu'] == "atomic" and not params['mem_sys'] == "classic":
+        return False
+    if 'cpu' in params and 'num_cpu' in params and params['cpu'] == "o3" and not params['num_cpu'] == "1":
+        return False
+    return True
+
+# https://www.gem5.org/documentation/benchmark_status/#boot-tests
+def boot_tests_filter(params):
+    if params['cpu'] == "atomic" and not params['num_cpu'] == "1":
+        return False
+    return True
+
+def npb_tests_filter(params):
+    if params['cpu'] == "timing" and not params['num_cpu'] in ["1", "8"]:
+        return False
+    return True
+
+# https://www.gem5.org/documentation/benchmark_status/#gapbs-tests
+def gapbs_tests_filter(params):
+    if params['cpu'] == "atomic" and not params['mem_sys'] == "classic":
+        return False
+    return True
+
+"""
+KVM + Classic : All Sizes + 1 cpu
+KVM + MESI_Two_Level: All Sizes + [1, 2, 8] cpu
+Timing + Classic: simsmall + 1 cpu
+Timing + MESI_Two_Level: simsmall + [1, 2] cpu
+"""
+def parsec_tests_filter(params):
+    if params['cpu'] == "kvm" and params['mem_sys'] == "classic":
+        if params['num_cpu'] == "1":
+            return True
+    elif params['cpu'] == "kvm" and params['mem_sys'] == "MESI_Two_Level":
+        return True
+    elif params['cpu'] == "timing" and params['mem_sys'] == "classic":
+        if params['size'] == "simsmall" and params['num_cpu'] == "1":
+            return True
+    elif params['cpu'] == "timing" and params['mem_sys'] == "MESI_Two_Level":
+        if params['size'] == "simsmall" and params['num_cpu'] in ["1", "2"]:
+            return True
+    return False
+
+def spec2006_tests_filter(params):
+    if params['size'] == "ref" and not params['cpu'] == "kvm":
+        return False
+    return True
+
+def spec2017_tests_filter(params):
+    if params['size'] == "ref" and not params['cpu'] == "kvm":
+        return False
+    return True
+
+tests_filters_map = {
+    'boot-tests': boot_tests_filter,
+    'npb-tests': npb_tests_filter,
+    'gapbs-tests': gapbs_tests_filter,
+    'parsec-tests': parsec_tests_filter,
+    'spec2006-tests': spec2006_tests_filter,
+    'spec2017-tests': spec2017_tests_filter
+}
+
+def workload_filter(name, params):
+    #if not (params['cpu'] in ['kvm']):
+    #    return False
+    #if not name.startswith('spec2006'):
+    #    return False
+    #if not params['cpu'] == "kvm":
+    #if not params['cpu'] == "atomic":
+    #    return False
+    #if name.startswith('spec2017'):
+    #    return False
+    return tests_filters_map[name](params) and universal_filter(params)

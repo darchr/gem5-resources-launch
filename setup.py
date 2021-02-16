@@ -34,18 +34,25 @@ cd ../../
 
 # build X86
 print_info "building X86/gem5.opt"
-# yes | /usr/bin/env python3 $(which scons) build/X86/gem5.opt -j256;
+yes | /usr/bin/env python3 $(which scons) build/X86/gem5.opt -j256;
+
+# build X86_MOESI_CMP_directory
+print_info "building X86_MI_example"
+echo "TARGET_ISA = 'x86'" > build_opts/X86_MI_example;
+echo "CPU_MODELS = 'AtomicSimpleCPU,O3CPU,TimingSimpleCPU'" >> build_opts/X86_MI_example;
+echo "PROTOCOL = 'MI_example'" >> build_opts/X86_MI_example;
+yes | /usr/bin/env python3 $(which scons) build/X86_MI_example/gem5.opt -j256;
 
 # build X86_MESI_Two_Level
 print_info "building X86_MESI_Two_Level/gem5.opt"
-#yes | /usr/bin/env python3 $(which scons) build/X86_MESI_Two_Level/gem5.opt -j256;
+yes | /usr/bin/env python3 $(which scons) build/X86_MESI_Two_Level/gem5.opt -j256;
 
 # build X86_MOESI_CMP_directory
 print_info "building X86_MOESI_CMP_directory"
 echo "TARGET_ISA = 'x86'" > build_opts/X86_MOESI_CMP_directory;
 echo "CPU_MODELS = 'AtomicSimpleCPU,O3CPU,TimingSimpleCPU'" >> build_opts/X86_MOESI_CMP_directory;
 echo "PROTOCOL = 'MOESI_CMP_directory'" >> build_opts/X86_MOESI_CMP_directory;
-#yes | /usr/bin/env python3 $(which scons) build/X86_MOESI_CMP_directory/gem5.opt -j256;
+yes | /usr/bin/env python3 $(which scons) build/X86_MOESI_CMP_directory/gem5.opt -j256;
 
 
 
