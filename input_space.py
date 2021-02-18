@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-boot_tests_params = SimpleNamespace(
+boot_exit_params = SimpleNamespace(
     kernels = ['4.4.186', '4.9.186', '4.14.134', '4.19.83', '5.4.49'],
     cpu_types = ['kvm', 'atomic', 'simple', 'o3'],
     mem_sys = ['classic', 'MI_example', 'MESI_Two_Level', 'MOESI_CMP_directory'],
@@ -8,7 +8,7 @@ boot_tests_params = SimpleNamespace(
     boot_types = ['init', 'systemd']
 )
 
-npb_tests_params = SimpleNamespace(
+npb_params = SimpleNamespace(
     kernels = ['4.19.83'],
     cpu_types = ['kvm', 'timing'],
     #mem_sys = ['classic', 'MI_example', 'MESI_Two_Level', 'MOESI_CMP_directory'],
@@ -17,7 +17,7 @@ npb_tests_params = SimpleNamespace(
     workloads = ['is.A.x', 'ep.A.x', 'cg.A.x', 'mg.A.x','ft.A.x', 'bt.A.x', 'sp.A.x', 'lu.A.x']
 )
 
-gapbs_tests_params = SimpleNamespace(
+gapbs_params = SimpleNamespace(
     kernels = ['5.4.49'],
     cpu_types = ['kvm', 'atomic', 'simple', 'o3'],
     num_cpus = ['1', '2', '4'],
@@ -27,7 +27,7 @@ gapbs_tests_params = SimpleNamespace(
     #graph = name of the workload
 )
 
-parsec_tests_params = SimpleNamespace(
+parsec_params = SimpleNamespace(
     kernels = ['4.19.83'],
     cpu_types = ['kvm', 'timing'],
     mem_sys = ['classic', 'MESI_Two_Level'],
@@ -42,9 +42,10 @@ parsec_tests_params = SimpleNamespace(
                Timing + MESI_Two_Level: simsmall + [1, 2] cpu"""
 )
 
-spec2006_tests_params = SimpleNamespace(
+spec_2006_params = SimpleNamespace(
     kernels = ['4.19.83'],
     cpu_types = ['kvm', 'atomic', 'timing', 'o3'],
+    mem_sys = ['classic', 'MI_example', 'MESI_Two_Level', 'MOESI_CMP_directory'],
     workloads = ['401.bzip2','403.gcc','410.bwaves','416.gamess','429.mcf',
                   '433.milc','434.zeusmp','435.gromacs','436.cactusADM',
                   '437.leslie3d','444.namd','445.gobmk','453.povray',
@@ -57,7 +58,7 @@ spec2006_tests_params = SimpleNamespace(
                 other cpus: [test] x the rest"""
 )
 
-spec2017_tests_params = SimpleNamespace(
+spec_2017_params = SimpleNamespace(
     kernels = ['4.19.83'],
     cpu_types = ['kvm', 'atomic', 'timing', 'o3'],
     workloads = ["503.bwaves_r", "507.cactuBSSN_r", "508.namd_r", "510.parest_r", "511.povray_r", "519.lbm_r",
@@ -74,12 +75,12 @@ spec2017_tests_params = SimpleNamespace(
 )
 
 name_params_map = {
-    'boot-tests': boot_tests_params,
-    'npb-tests': npb_tests_params,
-    'gapbs-tests': gapbs_tests_params,
-    'parsec-tests': parsec_tests_params,
-    'spec2006-tests': spec2006_tests_params,
-    'spec2017-tests': spec2017_tests_params
+    'boot-exit': boot_exit_params,
+    'npb': npb_params,
+    'gapbs': gapbs_params,
+    'parsec': parsec_params,
+    'spec-2006': spec_2006_params,
+    'spec-2017': spec_2017_params
 }
 
 

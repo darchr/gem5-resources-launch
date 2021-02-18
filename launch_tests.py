@@ -11,52 +11,53 @@ from gem5art.artifact.artifact import Artifact
 from gem5art.run import gem5Run
 
 OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
+RUN_NAME_SUFFIX = "launched:02/17/2021;gem5art-status;v20.1.0.3"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
 
-def get_boot_tests_jobs_iterator():
-    name = 'boot-tests'
+def get_boot_exit_jobs_iterator():
+    name = 'boot-exit'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.num_cpus, params.boot_types):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'num_cpu', 'boot_type'], p)
         if workload_filter(name, kwargs):
             yield kwargs
 
-def get_npb_tests_jobs_iterator():
-    name = 'npb-tests'
+def get_npb_jobs_iterator():
+    name = 'npb'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.num_cpus, params.workloads):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'num_cpu', 'workload'], p)
         if workload_filter(name, kwargs):
             yield kwargs
 
-def get_gapbs_tests_jobs_iterator():
-    name = 'gapbs-tests'
+def get_gapbs_jobs_iterator():
+    name = 'gapbs'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.num_cpus, params.mem_sys, params.workloads, params.synthetic):
         kwargs = lists_to_dict(['kernel', 'cpu', 'num_cpu', 'mem_sys', 'workload', 'synthetic'], p)
         if workload_filter(name, kwargs):
             yield kwargs
 
-def get_parsec_tests_jobs_iterator():
-    name = 'parsec-tests'
+def get_parsec_jobs_iterator():
+    name = 'parsec'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.num_cpus, params.workloads, params.sizes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'num_cpu', 'workload', 'size'], p)
         if workload_filter(name, kwargs):
             yield kwargs
 
-def get_spec2006_tests_jobs_iterator():
-    name = 'spec2006-tests'
+def get_spec_2006_jobs_iterator():
+    name = 'spec-2006'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.workloads, params.sizes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'workload', 'size'], p)
         if workload_filter(name, kwargs):
             yield kwargs
 
-def get_spec2017_tests_jobs_iterator():
-    name = 'spec2017-tests'
+def get_spec_2017_jobs_iterator():
+    name = 'spec-2017'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.workloads, params.sizes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'workload', 'size'], p)
@@ -70,7 +71,7 @@ def get_jobs_iterator():
                  get_parsec_tests_jobs_iterator(),
                  get_spec2006_tests_jobs_iterator(),
                  get_spec2017_tests_jobs_iterator()]
-    names = ['boot-tests', 'npb-tests', 'gapbs-tests', 'parsec-tests', 'spec2006-tests', 'spec2017-tests']
+    names = ['boot-exit', 'npb', 'gapbs', 'parsec', 'spec-2006', 'spec-2017']
     for name, iterator in zip(names, iterators):
         while True:
             try:
@@ -86,7 +87,7 @@ def get_gem5_binary_path(mem_sys):
         return "/scr/hn/gem5-resources-launch/gem5/build/X86_{}/gem5.opt".format(mem_sys)
 
 # https://github.com/darchr/gem5art-experiments/blob/master/launch-scripts/launch_boot_tests_gem5_20.py#L128
-def create_boot_tests_fs_run(params):
+def create_boot_exit_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
     mem_sys = params['mem_sys']
@@ -99,7 +100,7 @@ def create_boot_tests_fs_run(params):
     assert(mem_sys in gem5_binaries)
 
     gem5run = gem5Run.createFSRun(
-        'boot-exit;launched:02/16/2021;gem5art-status;v20.1.0.3', # name
+        'boot-exit;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/boot-exit/configs/run_exit.py', # run_script
         os.path.join(OUTPUT_FODLER, 'boot-exit/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, boot_type)), # outdir
@@ -115,7 +116,7 @@ def create_boot_tests_fs_run(params):
     )
     return gem5run
 
-def create_npb_tests_fs_run(params):
+def create_npb_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
     mem_sys = params['mem_sys']
@@ -128,7 +129,7 @@ def create_npb_tests_fs_run(params):
         timeout = 10*24*60*60 # 10 days
 
     gem5run = gem5Run.createFSRun(
-            'npb;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
+            'npb;'+RUN_NAME_SUFFIX, # name
             get_gem5_binary_path(mem_sys), # gem5_binary
             '/scr/hn/gem5-resources-launch/gem5-resources/src/npb/configs/run_npb.py', # run_script
             os.path.join(OUTPUT_FOLDER, 'npb/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload)), # outdir
@@ -144,7 +145,7 @@ def create_npb_tests_fs_run(params):
     )
     return gem5run
 
-def create_gapbs_tests_fs_run(params):
+def create_gapbs_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
     num_cpu = params['num_cpu']
@@ -157,7 +158,7 @@ def create_gapbs_tests_fs_run(params):
     else:
         timeout = 10*24*60*60 # 10 days
     gem5run = gem5Run.createFSRun(
-        'gapbs;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
+        'gapbs;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/gapbs/configs/run_gapbs.py', # run_script
         os.path.join(OUTPUT_FOLDER, 'gapbs/{}/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, synthetic, graph)), # outdir
@@ -173,7 +174,7 @@ def create_gapbs_tests_fs_run(params):
     )
     return gem5run
 
-def create_parsec_tests_fs_run(params):
+def create_parsec_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
     num_cpu = params['num_cpu']
@@ -192,7 +193,7 @@ def create_parsec_tests_fs_run(params):
         run_script = "/scr/hn/gem5-resources-launch/gem5-resources/src/parsec/configs-mesi-two-level/run_parsec_mesi_two_level.py"
 
     gem5run = gem5Run.createFSRun(
-        'parsec;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
+        'parsec;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         run_script, # run_script
         os.path.join(OUTPUT_FOLDER, 'parsec/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, size)), # outdir
@@ -208,7 +209,7 @@ def create_parsec_tests_fs_run(params):
     )
     return gem5run    
 
-def create_spec2006_tests_fs_run(params):
+def create_spec_2006_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
     workload = params['workload']
@@ -218,7 +219,7 @@ def create_spec2006_tests_fs_run(params):
     else:
         timeout = 10*24*60*60 # 10 days
     gem5run = gem5Run.createFSRun(
-        'spec-2006;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
+        'spec-2006;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path('classic'), # gem5 binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/spec-2006/configs/run_spec.py', # run_script
         os.path.join(OUTPUT_FOLDER, 'spec-2006/{}/{}/{}/{}/'. format(kernel, cpu, workload, size)), # outdir
@@ -234,7 +235,7 @@ def create_spec2006_tests_fs_run(params):
     )
     return gem5run
 
-def create_spec2017_tests_fs_run(params):
+def create_spec_2017_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
     workload = params['workload']
@@ -244,7 +245,7 @@ def create_spec2017_tests_fs_run(params):
     else:
         timeout = 10*24*60*60 # 10 days
     gem5run = gem5Run.createFSRun(
-        'spec-2017;launch:02/16/2021;gem5art-status;v20.1.0.3', # name
+        'spec-2017;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path('classic'), # gem5_binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/spec-2017/configs/run_spec.py', # run_script
         os.path.join(OUTPUT_FOLDER, 'spec-2017/{}/{}/{}/{}/'. format(kernel, cpu, workload, size)), # outdir
@@ -261,12 +262,12 @@ def create_spec2017_tests_fs_run(params):
     return gem5run
 
 name_create_fs_run_map = {
-    'boot-tests': create_boot_tests_fs_run,
-    'npb-tests': create_npb_tests_fs_run,
-    'gapbs-tests': create_gapbs_tests_fs_run,
-    'parsec-tests': create_parsec_tests_fs_run,
-    'spec2006-tests': create_spec2006_tests_fs_run,
-    'spec2017-tests': create_spec2017_tests_fs_run
+    'boot-exit': create_boot_exit_fs_run,
+    'npb': create_npb_fs_run,
+    'gapbs': create_gapbs_fs_run,
+    'parsec': create_parsec_fs_run,
+    'spec-2006': create_spec_2006_fs_run,
+    'spec-2017': create_spec_2017_fs_run
 }
 
 create_fs_run = lambda name, params: name_create_fs_run_map[name](params)
