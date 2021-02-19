@@ -11,7 +11,7 @@ from gem5art.artifact.artifact import Artifact
 from gem5art.run import gem5Run
 
 OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
-RUN_NAME_SUFFIX = "launched:02/18/2021;gem5art-status;v20.1.0.3"
+RUN_NAME_SUFFIX = "launched:02/19/2021;gem5art-status;v20.1.0.4;kvm"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -110,7 +110,7 @@ def create_boot_exit_fs_run(params):
         os.path.join('/scr/hn/gem5-resources-launch/linux-kernels', 'vmlinux'+'-'+kernel), # linux_binary
         '/scr/hn/gem5-resources-launch/disk-images/boot-exit.img', # disk_image
         linux_binaries[kernel], # linux_binary_artifact
-        boot_tests_artifacts.disk_image, # disk_image_artifact
+        boot_exit_artifacts.disk_image, # disk_image_artifact
         cpu, mem_sys, num_cpu, boot_type, # params
         timeout = timeout
     )
@@ -139,7 +139,7 @@ def create_npb_fs_run(params):
             os.path.join('/scr/hn/gem5-resources-launch/linux-kernels', 'vmlinux'+'-'+kernel), # linux_binary
             '/scr/hn/gem5-resources-launch/disk-images/npb.img', # disk_image
             linux_binaries[kernel], # linux_binary_artifact
-            npb_tests_artifacts.disk_image, # disk_image_artifact
+            npb_artifacts.disk_image, # disk_image_artifact
             cpu, mem_sys, workload, num_cpu, # params
             timeout = timeout
     )
@@ -168,7 +168,7 @@ def create_gapbs_fs_run(params):
         os.path.join('/scr/hn/gem5-resources-launch/linux-kernels', 'vmlinux'+'-'+kernel), # linux_binary
         '/scr/hn/gem5-resources-launch/disk-images/gapbs.img', # disk_image
         linux_binaries[kernel], # linux_binary_artifact
-        gapbs_tests_artifacts.disk_image, # disk_image_artifact
+        gapbs_artifacts.disk_image, # disk_image_artifact
         cpu, num_cpu, mem_sys, workload, synthetic, graph, # params
         timeout = timeout
     )
@@ -203,7 +203,7 @@ def create_parsec_fs_run(params):
         os.path.join('/scr/hn/gem5-resources-launch/linux-kernels', 'vmlinux'+'-'+kernel), # linux_binary
         '/scr/hn/gem5-resources-launch/disk-images/parsec.img', # disk_image
         linux_binaries[kernel], # linux_binary_artifact
-        parsec_tests_artifacts.disk_image, # disk_image_artifact
+        parsec_artifacts.disk_image, # disk_image_artifact
         cpu, workload, size, num_cpu, # params
         timeout = timeout
     )
@@ -229,7 +229,7 @@ def create_spec_2006_fs_run(params):
         os.path.join('/scr/hn/gem5-resources-launch/linux-kernels', 'vmlinux'+'-'+kernel), # linux_binary
         '/scr/hn/gem5-resources-launch/disk-images/spec-2006', # disk_image
         linux_binaries[kernel], # linux_binary_artifact
-        spec2006_tests_artifacts.disk_image, # disk_image_artifact
+        spec_2006_artifacts.disk_image, # disk_image_artifact
         cpu, workload, size, # params
         timeout = timeout
     )
@@ -255,7 +255,7 @@ def create_spec_2017_fs_run(params):
         os.path.join('/scr/hn/gem5-resources-launch/linux-kernels', 'vmlinux'+'-'+kernel), # linux_binary
         '/scr/hn/gem5-resources-launch/disk-images/spec-2017', # disk_image
         linux_binaries[kernel], # linux_binary_artifact
-        spec2017_tests_artifacts.disk_image, # disk_image_artifact
+        spec_2017_tests_artifacts.disk_image, # disk_image_artifact
         cpu, workload, size, # params
         timeout = timeout
     )
@@ -275,7 +275,7 @@ create_fs_run = lambda name, params: name_create_fs_run_map[name](params)
 def worker(job):
     name, params = job
     run = create_fs_run(name, params)
-    print("Starting running", params)
+    print("Starting running", name, params)
     run.run()
 
 if __name__ == "__main__":
