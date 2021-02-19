@@ -65,12 +65,12 @@ def get_spec_2017_jobs_iterator():
             yield kwargs
 
 def get_jobs_iterator():
-    iterators = [get_boot_tests_jobs_iterator(),
-                 get_npb_tests_jobs_iterator(),
-                 get_gapbs_tests_jobs_iterator(),
-                 get_parsec_tests_jobs_iterator(),
-                 get_spec2006_tests_jobs_iterator(),
-                 get_spec2017_tests_jobs_iterator()]
+    iterators = [get_boot_exit_jobs_iterator(),
+                 get_npb_jobs_iterator(),
+                 get_gapbs_jobs_iterator(),
+                 get_parsec_jobs_iterator(),
+                 get_spec_2006_jobs_iterator(),
+                 get_spec_2017_jobs_iterator()]
     names = ['boot-exit', 'npb', 'gapbs', 'parsec', 'spec-2006', 'spec-2017']
     for name, iterator in zip(names, iterators):
         while True:
