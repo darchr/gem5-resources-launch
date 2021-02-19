@@ -51,8 +51,8 @@ def get_parsec_jobs_iterator():
 def get_spec_2006_jobs_iterator():
     name = 'spec-2006'
     params = input_space.name_params_map[name]
-    for p in cross_product(params.kernels, params.cpu_types, params.workloads, params.sizes):
-        kwargs = lists_to_dict(['kernel', 'cpu', 'workload', 'size'], p)
+    for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.workloads, params.sizes):
+        kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'workload', 'size'], p)
         if workload_filter(name, kwargs):
             yield kwargs
 
@@ -256,7 +256,7 @@ def create_spec_2017_fs_run(params):
         '/scr/hn/gem5-resources-launch/disk-images/spec-2017', # disk_image
         linux_binaries[kernel], # linux_binary_artifact
         spec2017_tests_artifacts.disk_image, # disk_image_artifact
-        cpu, workload, size, '-z', # params
+        cpu, workload, size, # params
         timeout = timeout
     )
     return gem5run

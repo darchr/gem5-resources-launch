@@ -63,8 +63,8 @@ tests_filters_map = {
 }
 
 def workload_filter(name, params):
-    #if not (params['cpu'] in ['kvm']):
-    #    return False
+    if not (params['cpu'] in ['kvm']):
+        return False
     #if not name.startswith('spec2006'):
     #    return False
     #if not params['cpu'] == "kvm":
