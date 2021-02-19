@@ -11,7 +11,7 @@ from gem5art.artifact.artifact import Artifact
 from gem5art.run import gem5Run
 
 OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
-RUN_NAME_SUFFIX = "testrun;launched:02/19/2021;gem5art-status;v20.1.0.4;kvm"
+RUN_NAME_SUFFIX = "launched:02/19/2021;gem5art-status;v20.1.0.4;kvm"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -103,7 +103,7 @@ def create_boot_exit_fs_run(params):
         'boot-exit;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/boot-exit/configs/run_exit.py', # run_script
-        os.path.join(OUTPUT_FODLER, 'boot-exit/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, boot_type)), # outdir
+        os.path.join(OUTPUT_FOLDER, 'boot-exit/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, boot_type)), # outdir
         gem5_binaries[mem_sys], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
