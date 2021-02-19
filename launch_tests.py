@@ -11,7 +11,7 @@ from gem5art.artifact.artifact import Artifact
 from gem5art.run import gem5Run
 
 OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
-RUN_NAME_SUFFIX = "launched:02/17/2021;gem5art-status;v20.1.0.3"
+RUN_NAME_SUFFIX = "launched:02/18/2021;gem5art-status;v20.1.0.3"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))

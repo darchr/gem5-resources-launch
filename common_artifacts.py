@@ -14,14 +14,16 @@ experiments_repo = Artifact.registerArtifact(
 # gem5 artifacts
 gem5_repo = Artifact.registerArtifact(
     command = '''git clone https://gem5.googlesource.com/public/gem5
-                 git checkout v20.1.0.3''',
+                 git checkout v20.1.0.3
+                 git fetch https://gem5.googlesource.com/public/gem5 refs/changes/94/41594/3 && git cherry-pick FETCH_HEAD''',
     typ = 'git repo',
     name = 'gem5',
     path =  'gem5/',
     cwd = './',
-    documentation = '''Cloned gem5 from googlesource and checked out the v20.1.0.3 tag
-                       The HEAD commit is: cd21b5a5519940a0fa9b9a2dde68f30403d17f7e
-                       Change-Id: I95ab84ea259f5e0529ebaa32be65d9a14370f219'''
+    documentation = '''Cloned gem5 from googlesource, checked out the v20.1.0.3 tag and cherry-picked the scons 4 hotfix.
+                       Note that at the time of running this experiment, the scons 4 hotfix has not been merged, thus the cherry-picking change.
+                       The HEAD commit is: eab8ae6eafa6caa730d714aa72741e1dabf99fb6
+                       Change-Id: I3817f39ebc3021fb6fc89bcd09a96999f8ca2841'''
 )
 
 m5_binary = Artifact.registerArtifact(
@@ -47,9 +49,9 @@ gem5_binaries = {
                 path =  f'gem5/build/X86_{mem}/gem5.opt',
                 inputs = [gem5_repo,],
                 documentation = f'gem5 {mem} binary based on '
-                    'gem5 v20.1.0.3'
-                    'The HEAD commit is: cd21b5a5519940a0fa9b9a2dde68f30403d17f7e'
-                    'Change-Id: I95ab84ea259f5e0529ebaa32be65d9a14370f219'
+                    'gem5 v20.1.0.3 and cherry-picked scons 4 hotfix'
+                    'The HEAD commit is: eab8ae6eafa6caa730d714aa72741e1dabf99fb6'
+                    'Change-Id: I3817f39ebc3021fb6fc89bcd09a96999f8ca2841'
                 )
         for mem in ruby_mem_types
 }
@@ -63,9 +65,9 @@ gem5_binaries['classic'] = Artifact.registerArtifact(
     cwd = 'gem5/',
     path =  f'gem5/build/X86/gem5.opt',
     inputs = [gem5_repo],
-    documentation = 'gem5 binary based on gem5 v20.1.0.3'
-    'The HEAD commit is: cd21b5a5519940a0fa9b9a2dde68f30403d17f7e'
-    'Change-Id: I95ab84ea259f5e0529ebaa32be65d9a14370f219'
+    documentation = 'gem5 binary based on gem5 v20.1.0.3 and cherry-picked scons 4 hotfix'
+    'The HEAD commit is: eab8ae6eafa6caa730d714aa72741e1dabf99fb6'
+    'Change-Id: eab8ae6eafa6caa730d714aa72741e1dabf99fb6'
 )
 # ---
 
@@ -77,7 +79,7 @@ linux_binaries = {
                 typ = 'kernel',
                 path = f'linux-kernels/vmlinux-{version}',
                 cwd = 'linux-kernels/',
-                command = f'''wget http://dist.gem5.org/kernels/x86/static/vmlinux-{version}''',
+                command = f'''wget http://dist.gem5.org/dist/v20-1/kernels/x86/static/vmlinux-{version}''',
                 inputs = [experiments_repo],
                 documentation = f"Kernel binary for {version} with simple "
                                  "config file",
