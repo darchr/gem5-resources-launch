@@ -1,6 +1,8 @@
 from itertools import product as cross_product
 import multiprocessing as mp
 import os
+import sys
+import traceback
 
 from common_artifacts import *
 from tests_artifacts import *
@@ -11,7 +13,8 @@ from gem5art.artifact.artifact import Artifact
 from gem5art.run import gem5Run
 
 OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
-RUN_NAME_SUFFIX = "launched:02/19/2021;gem5art-status;v20.1.0.4;kvm"
+ERR_FOLDER = "/scr/hn/gem5-resources-launch/error_logs/"
+RUN_NAME_SUFFIX = "launched:02/23/2021;gem5art-status;v20.1.0.4;kvm;lavandula-angustifolia"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -276,7 +279,12 @@ def worker(job):
     name, params = job
     run = create_fs_run(name, params)
     print("Starting running", name, params)
-    run.run()
+    try:
+        run.run()
+    except Exception as err:
+        filepath = os.path.join(ERR_FOLDER, "/".join(list(params.values())))
+        filepath = os.path.join(filepath, 'err.txt')
+        traceback.print_exc(file=open(filepath, "w"))
 
 if __name__ == "__main__":
     jobs = get_jobs_iterator()
