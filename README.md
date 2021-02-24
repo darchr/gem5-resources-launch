@@ -17,14 +17,12 @@ In the `launch_test.py` file, there are global variables should be set,
 | Variable name | Meaning |
 | - | - |
 | `OUTPUT_FOLDER` | path to the folder containing the outputs of the gem5 runs |
-| `ERR_FOLDER`    | path to the folder containing the error caused by gem5art if
-a full system run runs into such an error |
+| `ERR_FOLDER`    | path to the folder containing the error caused by gem5art if a full system run runs into such an error |
 | `GEM5_FOLDER`   | path to the gem5 folder |
 | `GEM5_RESOURCES_FOLDER`| path to the gem5-resources folder |
 | `DISK_IMAGES_FOLDER` | path to the folder containing disk images |
 | `LINUX_KERNELS_FOLDER` | path to the folder containing Linux kernels |
-| `RUN_NAME_SUFFIX` | unique name for the experiment, this makes querying for
-the result of those runs easier |
+| `RUN_NAME_SUFFIX` | unique name for the experiment, this makes querying for the result of those runs easier |
 
 ## Setting up the gem5art in a virtual Python environment
 ```sh
