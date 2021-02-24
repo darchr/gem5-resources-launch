@@ -215,6 +215,7 @@ def create_parsec_fs_run(params):
 def create_spec_2006_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
+    mem_sys = params['mem_sys']
     workload = params['workload']
     size = params['size']
     if cpu == "kvm":
@@ -225,7 +226,7 @@ def create_spec_2006_fs_run(params):
         'spec-2006;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path('classic'), # gem5 binary
         '/scr/hn/gem5-resources-launch/gem5-resources/src/spec-2006/configs/run_spec.py', # run_script
-        os.path.join(OUTPUT_FOLDER, 'spec-2006/{}/{}/{}/{}/'. format(kernel, cpu, workload, size)), # outdir
+        os.path.join(OUTPUT_FOLDER, 'spec-2006/{}/{}/{}/{}/{}/'. format(kernel, cpu, mem_sys, workload, size)), # outdir
         gem5_binaries['classic'], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
@@ -233,7 +234,7 @@ def create_spec_2006_fs_run(params):
         '/scr/hn/gem5-resources-launch/disk-images/spec-2006', # disk_image
         linux_binaries[kernel], # linux_binary_artifact
         spec_2006_artifacts.disk_image, # disk_image_artifact
-        cpu, workload, size, # params
+        cpu, mem_sys, workload, size, # params
         timeout = timeout
     )
     return gem5run
