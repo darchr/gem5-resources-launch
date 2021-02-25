@@ -2,8 +2,8 @@
 
 INFO_PREFIX="INFO: "
 GEM5_FOLDER="./gem5"
-SPEC2006_ISO_PATH="/data/hn/spec-iso/CPU2006v1.0.1.iso"
-SPEC2017_ISO_PATH="/data/hn/spec-iso/cpu2017-1.1.0.iso"
+SPEC2006_ISO_PATH="/data1/CPU2006v1.0.1.iso"
+SPEC2017_ISO_PATH="/data1/spec2017/cpu2017-1.1.0.iso"
 
 
 GREEN='\033[0;32m'
