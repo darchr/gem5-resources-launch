@@ -17,12 +17,12 @@ from gem5art.run import gem5Run
 ABS_PATH = pathlib.Path(__file__).parent.absolute()
 
 OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
-ERR_FOLDER = os.join.path(ABS_PATH, "error_logs/")
-GEM5_FOLDER = os.join.path(ABS_PATH, "gem5/")
-GEM5_RESOURCES_FOLDER = os.join.path(ABS_PATH, "gem5-resources/")
-DISK_IMAGES_FOLDER = os.join.path(ABS_PATH, "disk-images/")
-LINUX_KERNELS_FOLDER = os.join.path(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:02/23/2021;gem5art-status;v20.1.0.4;kvm;lavandula-angustifolia"
+ERR_FOLDER = os.path.join(ABS_PATH, "error_logs/")
+GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
+GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
+DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
+LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
+RUN_NAME_SUFFIX = "launched:02/25/2021;gem5art-status;v20.1.0.4;kvm;spec2006;spec2017;lavandula-latifolia"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
