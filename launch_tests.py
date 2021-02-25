@@ -6,7 +6,8 @@ import sys
 import traceback
 
 from common_artifacts import *
-from tests_artifacts import *
+#from tests_artifacts import *
+from tests_artifacts import spec_2017_artifacts
 from filter_logic import *
 import input_space
 
@@ -22,7 +23,8 @@ GEM5_FOLDER = os.join.path(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.join.path(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.join.path(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.join.path(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:02/23/2021;gem5art-status;v20.1.0.4;kvm;lavandula-angustifolia"
+#RUN_NAME_SUFFIX = "launched:02/23/2021;gem5art-status;v20.1.0.4;kvm;lavandula-angustifolia"
+RUN_NAME_SUFFIX = "debugging"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -100,6 +102,7 @@ def get_gem5_binary_path(mem_sys):
     else:
         return os.path.join(GEM5_FOLDER, "build/X86_{}/gem5.opt".format(mem_sys))
 
+"""
 # https://github.com/darchr/gem5art-experiments/blob/master/launch-scripts/launch_boot_tests_gem5_20.py#L128
 def create_boot_exit_fs_run(params):
     kernel = params['kernel']
@@ -249,7 +252,7 @@ def create_spec_2006_fs_run(params):
         timeout = timeout
     )
     return gem5run
-
+"""
 def create_spec_2017_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
@@ -277,11 +280,11 @@ def create_spec_2017_fs_run(params):
     return gem5run
 
 name_create_fs_run_map = {
-    'boot-exit': create_boot_exit_fs_run,
-    'npb': create_npb_fs_run,
-    'gapbs': create_gapbs_fs_run,
-    'parsec': create_parsec_fs_run,
-    'spec-2006': create_spec_2006_fs_run,
+#    'boot-exit': create_boot_exit_fs_run,
+#    'npb': create_npb_fs_run,
+#    'gapbs': create_gapbs_fs_run,
+#    'parsec': create_parsec_fs_run,
+#    'spec-2006': create_spec_2006_fs_run,
     'spec-2017': create_spec_2017_fs_run
 }
 
