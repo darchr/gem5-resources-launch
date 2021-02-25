@@ -295,8 +295,7 @@ def worker(job):
     try:
         run.run()
     except Exception as err:
-        filepath = os.path.join(ERR_FOLDER, "/".join(list(params.values())))
-        filepath = os.path.join(filepath, 'err.txt')
+        filepath = os.path.join(ERR_FOLDER, "_".join(list(params.values())))
         traceback.print_exc(file=open(filepath, "w"))
 
 if __name__ == "__main__":
