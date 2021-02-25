@@ -6,8 +6,7 @@ import sys
 import traceback
 
 from common_artifacts import *
-#from tests_artifacts import *
-from tests_artifacts import spec_2017_artifacts
+from tests_artifacts import *
 from filter_logic import *
 import input_space
 
@@ -23,8 +22,7 @@ GEM5_FOLDER = os.join.path(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.join.path(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.join.path(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.join.path(ABS_PATH, "linux-kernels/")
-#RUN_NAME_SUFFIX = "launched:02/23/2021;gem5art-status;v20.1.0.4;kvm;lavandula-angustifolia"
-RUN_NAME_SUFFIX = "debugging"
+RUN_NAME_SUFFIX = "launched:02/23/2021;gem5art-status;v20.1.0.4;kvm;lavandula-angustifolia"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -102,7 +100,7 @@ def get_gem5_binary_path(mem_sys):
     else:
         return os.path.join(GEM5_FOLDER, "build/X86_{}/gem5.opt".format(mem_sys))
 
-"""
+
 # https://github.com/darchr/gem5art-experiments/blob/master/launch-scripts/launch_boot_tests_gem5_20.py#L128
 def create_boot_exit_fs_run(params):
     kernel = params['kernel']
@@ -238,10 +236,10 @@ def create_spec_2006_fs_run(params):
         timeout = 10*24*60*60 # 10 days
     gem5run = gem5Run.createFSRun(
         'spec-2006;'+RUN_NAME_SUFFIX, # name
-        get_gem5_binary_path('classic'), # gem5 binary
+        get_gem5_binary_path(mem_sys), # gem5 binary
         os.path.join(GEM5_RESOURCES_FOLDER, 'src/spec-2006/configs/run_spec.py'), # run_script
         os.path.join(OUTPUT_FOLDER, 'spec-2006/{}/{}/{}/{}/{}/'. format(kernel, cpu, mem_sys, workload, size)), # outdir
-        gem5_binaries['classic'], # gem5_artifact
+        gem5_binaries[mem_sys], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
         os.path.join(LINUX_KERNELS_FOLDER, 'vmlinux'+'-'+kernel), # linux_binary
@@ -252,7 +250,7 @@ def create_spec_2006_fs_run(params):
         timeout = timeout
     )
     return gem5run
-"""
+
 def create_spec_2017_fs_run(params):
     kernel = params['kernel']
     cpu = params['cpu']
@@ -273,18 +271,18 @@ def create_spec_2017_fs_run(params):
         os.path.join(LINUX_KERNELS_FOLDER, 'vmlinux'+'-'+kernel), # linux_binary
         os.path.join(DISK_IMAGES_FOLDER, 'spec-2017'), # disk_image
         linux_binaries[kernel], # linux_binary_artifact
-        spec_2017_tests_artifacts.disk_image, # disk_image_artifact
+        spec_2017_artifacts.disk_image, # disk_image_artifact
         cpu, workload, size, # params
         timeout = timeout
     )
     return gem5run
 
 name_create_fs_run_map = {
-#    'boot-exit': create_boot_exit_fs_run,
-#    'npb': create_npb_fs_run,
-#    'gapbs': create_gapbs_fs_run,
-#    'parsec': create_parsec_fs_run,
-#    'spec-2006': create_spec_2006_fs_run,
+    'boot-exit': create_boot_exit_fs_run,
+    'npb': create_npb_fs_run,
+    'gapbs': create_gapbs_fs_run,
+    'parsec': create_parsec_fs_run,
+    'spec-2006': create_spec_2006_fs_run,
     'spec-2017': create_spec_2017_fs_run
 }
 
