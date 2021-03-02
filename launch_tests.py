@@ -167,7 +167,7 @@ def create_gapbs_fs_run(params):
     mem_sys = params['mem_sys']
     workload = params['workload']
     synthetic = params['synthetic']
-    graph = params['n_nodes']
+    n_nodes = params['n_nodes']
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
