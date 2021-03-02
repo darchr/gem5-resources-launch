@@ -22,7 +22,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:02/25/2021;gem5art-status;v20.1.0.4;helianthus-agrestis"
+RUN_NAME_SUFFIX = "launched:03/01/2021;gem5art-status;v20.1.0.4;helianthus-agrestis"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -305,7 +305,6 @@ if __name__ == "__main__":
             f.write(str(job))
             f.write("\n")
     jobs = get_jobs_iterator()
-    print(len(jobs))
-    #with mp.Pool(mp.cpu_count() // 3) as pool:
-    #    pool.map(worker, jobs)
+    with mp.Pool(mp.cpu_count() // 3) as pool:
+        pool.map(worker, jobs)
 
