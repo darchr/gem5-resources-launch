@@ -22,7 +22,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:02/25/2021;gem5art-status;v20.1.0.4;atomic;bougainvillea-spectabilis"
+RUN_NAME_SUFFIX = "launched:02/25/2021;gem5art-status;v20.1.0.4;helianthus-agrestis"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -49,8 +49,8 @@ def get_npb_jobs_iterator():
 def get_gapbs_jobs_iterator():
     name = 'gapbs'
     params = input_space.name_params_map[name]
-    for p in cross_product(params.kernels, params.cpu_types, params.num_cpus, params.mem_sys, params.workloads, params.synthetic):
-        kwargs = lists_to_dict(['kernel', 'cpu', 'num_cpu', 'mem_sys', 'workload', 'synthetic'], p)
+    for p in cross_product(params.kernels, params.cpu_types, params.num_cpus, params.mem_sys, params.workloads, params.synthetic, params.n_nodes):
+        kwargs = lists_to_dict(['kernel', 'cpu', 'num_cpu', 'mem_sys', 'workload', 'synthetic', 'n_nodes'], p)
         if workload_filter(name, kwargs):
             yield kwargs
 
@@ -167,7 +167,7 @@ def create_gapbs_fs_run(params):
     mem_sys = params['mem_sys']
     workload = params['workload']
     synthetic = params['synthetic']
-    graph = workload
+    graph = params['n_nodes']
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
@@ -184,7 +184,7 @@ def create_gapbs_fs_run(params):
         os.path.join(DISK_IMAGES_FOLDER, 'gapbs.img'), # disk_image
         linux_binaries[kernel], # linux_binary_artifact
         gapbs_artifacts.disk_image, # disk_image_artifact
-        cpu, num_cpu, mem_sys, workload, synthetic, graph, # params
+        cpu, num_cpu, mem_sys, workload, synthetic, n_nodes, # params
         timeout = timeout
     )
     return gem5run
@@ -305,6 +305,7 @@ if __name__ == "__main__":
             f.write(str(job))
             f.write("\n")
     jobs = get_jobs_iterator()
-    with mp.Pool(mp.cpu_count() // 3) as pool:
-        pool.map(worker, jobs)
+    print(len(jobs))
+    #with mp.Pool(mp.cpu_count() // 3) as pool:
+    #    pool.map(worker, jobs)
 

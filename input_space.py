@@ -23,7 +23,8 @@ gapbs_params = SimpleNamespace(
     num_cpus = ['1', '2', '4'],
     mem_sys = ['classic', 'MI_example', 'MESI_Two_Level'],
     workloads = ['cc', 'bc', 'bfs', 'tc', 'pr', 'sssp'],
-    synthetic = ['1']
+    synthetic = ['1'],
+    n_nodes = ['10'] # 2**10 nodes
     #graph = name of the workload
 )
 

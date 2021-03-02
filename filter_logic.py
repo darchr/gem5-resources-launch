@@ -63,8 +63,8 @@ tests_filters_map = {
 }
 
 def workload_filter(name, params):
-    if not (params['cpu'] in ['atomic']):
-        return False
+    #if not (params['cpu'] in ['atomic']):
+    #    return False
     #if not name in ["spec-2006", "spec-2017"]:
     #    return False
     #if not params['cpu'] == "kvm":
@@ -72,4 +72,6 @@ def workload_filter(name, params):
     #    return False
     #if not name.startswith('spec-2017'):
     #    return False
+    if not name == "gapbs":
+        return False
     return tests_filters_map[name](params) and universal_filter(params)
