@@ -176,7 +176,7 @@ def create_gapbs_fs_run(params):
         'gapbs;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5_binary
         os.path.join(GEM5_RESOURCES_FOLDER, 'src/gapbs/configs/run_gapbs.py'), # run_script
-        os.path.join(OUTPUT_FOLDER, 'gapbs/{}/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, synthetic, graph)), # outdir
+        os.path.join(OUTPUT_FOLDER, 'gapbs/{}/{}/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, workload, synthetic, n_nodes)), # outdir
         gem5_binaries[mem_sys], # gem5_artifact
         gem5_repo, # gem5_git_artifact
         experiments_repo, # run_script_git_artifact
