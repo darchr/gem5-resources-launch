@@ -22,7 +22,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:03/04/2021;gem5art-status;v20.1.0.4;o3;bellis-bernardii"
+RUN_NAME_SUFFIX = "launched:03/04/2021;gem5art-status;v20.1.0.4;o3;patch001"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -150,7 +150,7 @@ def create_npb_fs_run(params):
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
-        timeout = 6*24*60*60 + 12*60*60 # 6.5 days
+        timeout = 3*24*60*60 # 3 days
 
     gem5run = gem5Run.createFSRun(
             'npb;'+RUN_NAME_SUFFIX, # name
@@ -180,7 +180,7 @@ def create_gapbs_fs_run(params):
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
-        timeout = 6*24*60*60 + 12*60*60 # 6.5 days
+        timeout = 3*24*60*60 # 3 days
     gem5run = gem5Run.createFSRun(
         'gapbs;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5_binary
@@ -209,7 +209,7 @@ def create_parsec_fs_run(params):
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
-        timeout = 6*24*60*60 + 12*60*60 # 6.5 days
+        timeout = 3*24*60*60 # 3 days
 
     if mem_sys == "classic":
         run_script = os.path.join(GEM5_RESOURCES_FOLDER, "src/parsec/configs/run_parsec.py")
@@ -244,7 +244,7 @@ def create_parsec_20_04_fs_run(params):
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
-        timeout = 6*24*60*60 + 12*60*60 # 6.5 days
+        timeout = 3*24*60*60 # 3 days
 
     if mem_sys == "classic":
         run_script = os.path.join(GEM5_RESOURCES_FOLDER, "src/parsec/configs/run_parsec.py")
@@ -277,7 +277,7 @@ def create_spec_2006_fs_run(params):
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
-        timeout = 6*24*60*60 + 12*60*60 # 6.5 days
+        timeout = 3*24*60*60 # 3 days
     gem5run = gem5Run.createFSRun(
         'spec-2006;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5 binary
@@ -303,7 +303,7 @@ def create_spec_2017_fs_run(params):
     if cpu == "kvm":
         timeout = 24*60*60 # 1 day
     else:
-        timeout = 6*24*60*60 + 12*60*60 # 6.5 days
+        timeout = 3*24*60*60 # 3 days
     gem5run = gem5Run.createFSRun(
         'spec-2017;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path('classic'), # gem5_binary
@@ -350,6 +350,6 @@ if __name__ == "__main__":
             f.write(str(job))
             f.write("\n")
     jobs = get_jobs_iterator()
-    #with mp.Pool(mp.cpu_count() // 2) as pool:
-    #    pool.map(worker, jobs)
+    with mp.Pool(mp.cpu_count() // 3 * 2) as pool:
+        pool.map(worker, jobs)
 

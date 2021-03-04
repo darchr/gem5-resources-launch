@@ -81,23 +81,26 @@ def workload_filter(name, params):
     #if not name == "gapbs":
     #    return False
     
+    if not (name.startswith('parsec') or name.startswith('spec')):
+        return False
+
     #if not name.startswith('parsec'):
     #    return False
-    #if not (params["kernel"] in ["4.15.18", "5.4.51"]):
-    #    return False
-    #if not (params['cpu'] == 'timing'):
-    #    return False
-    #if not (params['mem_sys'] == 'MESI_Two_Level'):
-    #    return False 
-    #if not (params['size'] == 'simmedium'):
-    #    return False
+    if name.startswith('parsec'):
+        if not (params["kernel"] in ["4.15.18", "5.4.51"]):
+            return False
+        if not (params['cpu'] == 'timing'):
+            return False
+        if not (params['mem_sys'] == 'MESI_Two_Level'):
+            return False 
+        if not (params['size'] == 'simmedium'):
+            return False
 
     # bellis-bernardii
-    if not (params['cpu'] == 'o3'):
-        return False
-    if not (name.startswith('spec') or name == 'boot-exit'):
-        return False
-    if name.startswith('spec') and 'mem_sys' in params and not params['mem_sys'] == "classic":
-        return False
+    if name.startswith('spec'):
+        if not (params['cpu'] == 'o3'):
+            return False
+        if 'mem_sys' in params and not params['mem_sys'] == "classic":
+            return False
 
     return tests_filters_map[name](params) and universal_filter(params)
