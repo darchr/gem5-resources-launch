@@ -95,7 +95,7 @@ spec_2017_artifacts = SimpleNamespace(disk_image = spec_2017_disk_image)
 # ---
 
 # parsec 20.04
-parsec_20.04_disk_image = Artifact.registerArtifact(
+parsec_20_04_disk_image = Artifact.registerArtifact(
     command = '''cp ../../../../parsec-20.04.json ./parsec/parsec-20.04.json
                  ./parker build parsec/parsec-20.04.json;
                  mv parsec/parsec-20.04-image/parsec-20.04 ../../../../disk-images/parsec-20.04''',

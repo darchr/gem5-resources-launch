@@ -79,4 +79,6 @@ def workload_filter(name, params):
         return False
     if not (("kernel" in params) and (params["kernel"] in ["4.15.18", "5.4.51"])):
         return False
+    if not (params['cpu'] == 'kvm'):
+        return False
     return tests_filters_map[name](params) and universal_filter(params)

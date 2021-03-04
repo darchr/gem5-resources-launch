@@ -90,6 +90,7 @@ linux_binaries = {
 
 # manually compiled Linux kernels
 linux_versions = ['5.4.51', '4.15.18']
+linux_git_artifact = {}
 linux_git_artifact['5.4.51'] = Artifact.registerArtifact(
     name = f"linux kernel version 5.4.51 git repo",
     typ = "git repo",
@@ -97,7 +98,7 @@ linux_git_artifact['5.4.51'] = Artifact.registerArtifact(
     cwd = "./linux-kernels",
     command = """
         git clone --branch v5.4.51 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.51;
-    """
+    """,
     documentation = f"linux kernel version 5.4.51 source code"
 )
 
@@ -124,7 +125,7 @@ linux_git_artifact['4.15.18'] = Artifact.registerArtifact(
     cwd = "./linux-kernels",
     command = """
         git clone --branch v4.15.18 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.15.18;
-    """
+    """,
     documentation = f"linux kernel version 4.15.18 source code"
 )
 
