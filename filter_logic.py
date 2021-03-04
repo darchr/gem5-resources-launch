@@ -41,6 +41,8 @@ def parsec_filter(params):
     elif params['cpu'] == "timing" and params['mem_sys'] == "MESI_Two_Level":
         if params['size'] == "simsmall" and params['num_cpu'] in ["1", "2"]:
             return True
+        if params['size'] == "simmedium":
+            return True
     return False
 
 def spec2006_filter(params):
@@ -82,7 +84,10 @@ def workload_filter(name, params):
         return False
     if not (params['cpu'] == 'timing'):
         return False
-    
+    if not (params['mem_sys'] == 'MESI_Two_Level'):
+        return False 
+    if not (params['size'] == 'simmedium'):
+        return False
     # bellis-annua
     #if not (params['cpu'] == 'o3'):
     #    return False

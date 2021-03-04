@@ -36,11 +36,11 @@ parsec_params = SimpleNamespace(
     workloads = ['blackscholes', 'bodytrack', 'canneal', 'dedup', 'facesim', 'ferret',
                  'fluidanimate', 'freqmine', 'raytrace', 'streamcluster', 'swaptions',
                  'vips', 'x264'],
-    sizes = ['simsmall', 'simlarge', 'native'],
+    sizes = ['simsmall', 'simmedium', 'simlarge', 'native'],
     notes = """KVM + Classic : All Sizes + 1 cpu
                KVM + MESI_Two_Level: All Sizes + [1, 2, 8] cpu
                Timing + Classic: simsmall + 1 cpu
-               Timing + MESI_Two_Level: simsmall + [1, 2] cpu"""
+               Timing + MESI_Two_Level: simsmall + [1, 2, 8] cpu"""
 )
 
 parsec_20_04_params = SimpleNamespace(
@@ -51,7 +51,7 @@ parsec_20_04_params = SimpleNamespace(
     workloads = ['blackscholes', 'bodytrack', 'canneal', 'dedup', 'facesim', 'ferret',
                  'fluidanimate', 'freqmine', 'raytrace', 'streamcluster', 'swaptions',
                  'vips', 'x264'],
-    sizes = ['simsmall', 'simlarge', 'native'],
+    sizes = ['simsmall', 'simmedium', 'simlarge', 'native'],
     notes = """KVM + Classic : All Sizes + 1 cpu
                KVM + MESI_Two_Level: All Sizes + [1, 2, 8] cpu
                Timing + Classic: simsmall + 1 cpu
