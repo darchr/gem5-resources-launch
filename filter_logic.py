@@ -2,8 +2,11 @@
 def universal_filter(params):
     if 'cpu' in params and 'mem_sys' in params and params['cpu'] == "atomic" and not params['mem_sys'] == "classic":
         return False
-    if 'cpu' in params and 'num_cpu' in params and params['cpu'] == "o3" and not params['num_cpu'] == "1":
-        return False
+    #if 'cpu' in params and 'num_cpu' in params and params['cpu'] == "o3" and not params['num_cpu'] == "1" and 'mem_sys' in params and params['mem_sys'] == 'classic':
+    if 'cpu' in params and params['cpu'] == 'o3':
+        if 'mem_sys' in params and params['mem_sys'] == 'classic':
+            if 'num_cpu' in params and not params['num_cpu'] == '1':
+                return False
     return True
 
 # https://www.gem5.org/documentation/benchmark_status/#boot-tests
@@ -78,22 +81,23 @@ def workload_filter(name, params):
     #if not name == "gapbs":
     #    return False
     
-    if not name.startswith('parsec'):
-        return False
-    if not (params["kernel"] in ["4.15.18", "5.4.51"]):
-        return False
-    if not (params['cpu'] == 'timing'):
-        return False
-    if not (params['mem_sys'] == 'MESI_Two_Level'):
-        return False 
-    if not (params['size'] == 'simmedium'):
-        return False
-    # bellis-annua
-    #if not (params['cpu'] == 'o3'):
+    #if not name.startswith('parsec'):
     #    return False
-    #if not (name.startswith('spec') or name == 'boot-exit'):
+    #if not (params["kernel"] in ["4.15.18", "5.4.51"]):
     #    return False
-    #if ('mem_sys' in params and not params['mem_sys'] == 'classic'):
+    #if not (params['cpu'] == 'timing'):
     #    return False
-    
+    #if not (params['mem_sys'] == 'MESI_Two_Level'):
+    #    return False 
+    #if not (params['size'] == 'simmedium'):
+    #    return False
+
+    # bellis-bernardii
+    if not (params['cpu'] == 'o3'):
+        return False
+    if not (name.startswith('spec') or name == 'boot-exit'):
+        return False
+    if name.startswith('spec') and 'mem_sys' in params and not params['mem_sys'] == "classic":
+        return False
+
     return tests_filters_map[name](params) and universal_filter(params)
