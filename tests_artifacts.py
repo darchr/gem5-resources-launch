@@ -101,3 +101,15 @@ spec_2017_disk_image = Artifact.registerArtifact(
 spec_2017_artifacts = SimpleNamespace(disk_image = spec_2017_disk_image)
 # ---
 
+# parsec 20.04
+parsec_20.04_disk_image = Artifact.registerArtifact(
+    command = '''cp ../../../../parsec-20.04.json ./parsec/parsec-20.04.json
+                 ./parker build parsec/parsec-20.04.json;
+                 mv parsec/parsec.20.04-image/parsec.20.04 ../../../../disk-images/parsec.20.04''',
+    typ = 'disk image',
+    name = 'parsec-disk-image',
+    cwd = 'gem5-resources/src/parsec/disk-image/',
+    path = 'disk-images/parsec.20.04',
+    documentation = 'Disk-image using Ubuntu 20.04 with m5 binary and PARSEC installed'
+)
+parsec_20_04_artifacts = SimpleNamespace(disk_image = parsec_20_04_disk_image)

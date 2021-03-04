@@ -146,3 +146,44 @@ if [ ! -f "vmlinux-5.4.49" ]; then
 fi
 cd ../
 
+
+## set up parsec-experiment
+cd linux-kernels
+if [ ! -f "vmlinux-4.15.18" ]; then
+    print_info "Building Linux kernel version 4.15.18"
+    git clone --branch v4.15.18 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.15.18;
+    cd linux-4.15.18;
+    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.4.9.186 .config
+    yes '' | make oldconfig;
+    make -j 32;
+    cp vmlinux ../vmlinux-4.15.18;
+    cd ../;
+fi
+
+if [ ! -f "vmlinux-5.4.51" ]; then
+    print_info "Building Linux kernel version 5.4.51"
+    git clone --branch v5.4.51 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.51;
+    cd linux-5.4.51;
+    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.5.4.49 .config
+    yes '' | make oldconfig;
+    make -j 32;
+    cp vmlinux ../vmlinux-5.4.51;
+    cd ../;
+fi
+cd ..
+
+cd disk-images
+if [ ! -f "parsec.20.04" ] ; then
+    print_info "building parsec disk image (Ubuntu 20.04)";
+    cd ../gem5-resources/src/parsec;
+    ln -s ../../../gem5 gem5;
+    cd disk-image;
+    wget https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_linux_amd64.zip;
+    unzip packer_1.6.5_linux_amd64.zip;
+    rm packer_1.6.5_linux_amd64.zip;
+    cp ../../../../parsec-20.04.json ./parsec/parsec-20.04.json;
+    ./packer build parsec/parsec-20.04.json;
+    cp parsec/parsec.20.04-image/parsec.20.04 ../../../../disk-images/;
+    cd ../../../../disk-images;
+fi
+cd ..

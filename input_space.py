@@ -29,7 +29,7 @@ gapbs_params = SimpleNamespace(
 )
 
 parsec_params = SimpleNamespace(
-    kernels = ['4.19.83'],
+    kernels = ['4.19.83', '4.15.18', '5.4.51'],
     cpu_types = ['kvm', 'timing'],
     mem_sys = ['classic', 'MESI_Two_Level'],
     num_cpus = ['1', '2', '8'],

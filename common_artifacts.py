@@ -87,3 +87,59 @@ linux_binaries = {
     for version in linux_versions
 }
 # ---
+
+# manually compiled Linux kernels
+linux_versions = ['5.4.51', '4.15.18']
+linux_git_artifact['5.4.51'] = Artifact.registerArtifact(
+    name = f"linux kernel version 5.4.51 git repo",
+    typ = "git repo",
+    path = "linux-kernels/linux-5.4.51",
+    cwd = "./linux-kernels",
+    command = """
+        git clone --branch v5.4.51 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.51;
+    """
+    documentation = f"linux kernel version 5.4.51 source code"
+)
+
+linux_binaries['5.4.51'] = Artifact.registerArtifact(
+    name = f'vmlinux-5.4.51',
+    typ = 'kernel',
+    path = f'linux-kernels/vmlinux-5.4.51',
+    cwd = 'linux-kernels',
+    command = '''
+    cd linux-5.4.51;
+    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.5.4.51 .config;
+    yes '' | make oldconfig;
+    make -j 32;
+    cp vmlinux ../vmlinux-5.4.51;
+    ''',
+    inputs = [experiments_repo, linux_git_artifact['5.4.51']],
+    documentation = f"Kernel binary for 5.4.51 with a simple config file"
+)
+
+linux_git_artifact['4.15.18'] = Artifact.registerArtifact(
+    name = f"linux kernel version 4.15.18 git repo",
+    typ = "git repo",
+    path = "linux-kernels/linux-4.15.18",
+    cwd = "./linux-kernels",
+    command = """
+        git clone --branch v4.15.18 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.15.18;
+    """
+    documentation = f"linux kernel version 4.15.18 source code"
+)
+
+linux_binaries['4.15.18'] = Artifact.registerArtifact(
+    name = f'vmlinux-4.15.18',
+    typ = 'kernel',
+    path = f'linux-kernels/vmlinux-4.15.18',
+    cwd = 'linux-kernels',
+    command = '''
+    cd linux-4.15.18;
+    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.4.9.186 .config;
+    yes '' | make oldconfig;
+    make -j 32;
+    cp vmlinux ../vmlinux-4.15.18
+    ''',
+    inputs = [experiments_repo, linux_git_artifact['4.15.18']],
+    documentation = f"Kernel binary for 4.15.18 with a simple config file"
+)
