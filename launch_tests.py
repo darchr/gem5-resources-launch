@@ -22,7 +22,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:03/04/2021;gem5art-status;v20.1.0.4;o3;patch002"
+RUN_NAME_SUFFIX = "launched:03/04/2021;gem5art-status;v20.1.0.4;o3;patch003"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
