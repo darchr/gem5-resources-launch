@@ -80,7 +80,7 @@ def workload_filter(name, params):
         return False
     if not (params["kernel"] in ["4.15.18", "5.4.51"]):
         return False
-    if not (params['cpu'] == 'kvm'):
+    if not (params['cpu'] == 'timing'):
         return False
     
     # bellis-annua
