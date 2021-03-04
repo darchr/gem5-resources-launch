@@ -75,16 +75,20 @@ def workload_filter(name, params):
     #    return False
     #if not name == "gapbs":
     #    return False
-    #if not name.startswith('parsec'):
-    #    return False
-    #if not (("kernel" in params) and (params["kernel"] in ["4.15.18", "5.4.51"])):
-    #    return False
-    #if not (params['cpu'] == 'kvm'):
-    #    return False
-    if not (params['cpu'] == 'o3'):
+    
+    if not name.startswith('parsec'):
         return False
-    if not (name.startswith('spec') or name == 'boot-exit'):
+    if not (params["kernel"] in ["4.15.18", "5.4.51"]):
         return False
-    if ('mem_sys' in params and not params['mem_sys'] == 'classic'):
+    if not (params['cpu'] == 'kvm'):
         return False
+    
+    # bellis-annua
+    #if not (params['cpu'] == 'o3'):
+    #    return False
+    #if not (name.startswith('spec') or name == 'boot-exit'):
+    #    return False
+    #if ('mem_sys' in params and not params['mem_sys'] == 'classic'):
+    #    return False
+    
     return tests_filters_map[name](params) and universal_filter(params)
