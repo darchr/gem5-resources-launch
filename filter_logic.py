@@ -58,6 +58,7 @@ tests_filters_map = {
     'npb': npb_filter,
     'gapbs': gapbs_filter,
     'parsec': parsec_filter,
+    'parsec-20.04': parsec_filter,
     'spec-2006': spec2006_filter,
     'spec-2017': spec2017_filter
 }
@@ -72,6 +73,10 @@ def workload_filter(name, params):
     #    return False
     #if not name.startswith('spec-2017'):
     #    return False
-    if not name == "gapbs":
+    #if not name == "gapbs":
+    #    return False
+    if not name.startswith('parsec'):
+        return False
+    if not (("kernel" in params) and (params["kernel"] in ["4.15.18", "5.4.51"])):
         return False
     return tests_filters_map[name](params) and universal_filter(params)

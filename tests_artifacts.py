@@ -4,13 +4,6 @@ from common_artifacts import *
 
 from gem5art.artifact.artifact import Artifact
 
-tests = ['boot-exit',
-         'npb',
-         'gapbs',
-         'parsec',
-         'spec-2006',
-         'spec-2017']
-
 packer_binary = Artifact.registerArtifact(
     command = '''wget https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_linux_amd64.zip;
                  unzip packer_1.6.5_linux_amd64.zip;
@@ -105,11 +98,11 @@ spec_2017_artifacts = SimpleNamespace(disk_image = spec_2017_disk_image)
 parsec_20.04_disk_image = Artifact.registerArtifact(
     command = '''cp ../../../../parsec-20.04.json ./parsec/parsec-20.04.json
                  ./parker build parsec/parsec-20.04.json;
-                 mv parsec/parsec.20.04-image/parsec.20.04 ../../../../disk-images/parsec.20.04''',
+                 mv parsec/parsec-20.04-image/parsec-20.04 ../../../../disk-images/parsec-20.04''',
     typ = 'disk image',
     name = 'parsec-disk-image',
     cwd = 'gem5-resources/src/parsec/disk-image/',
-    path = 'disk-images/parsec.20.04',
+    path = 'disk-images/parsec-20.04',
     documentation = 'Disk-image using Ubuntu 20.04 with m5 binary and PARSEC installed'
 )
 parsec_20_04_artifacts = SimpleNamespace(disk_image = parsec_20_04_disk_image)

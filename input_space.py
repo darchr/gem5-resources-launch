@@ -29,7 +29,22 @@ gapbs_params = SimpleNamespace(
 )
 
 parsec_params = SimpleNamespace(
-    kernels = ['4.19.83', '4.15.18', '5.4.51'],
+    kernels = ['4.19.83', '4.15.18'],
+    cpu_types = ['kvm', 'timing'],
+    mem_sys = ['classic', 'MESI_Two_Level'],
+    num_cpus = ['1', '2', '8'],
+    workloads = ['blackscholes', 'bodytrack', 'canneal', 'dedup', 'facesim', 'ferret',
+                 'fluidanimate', 'freqmine', 'raytrace', 'streamcluster', 'swaptions',
+                 'vips', 'x264'],
+    sizes = ['simsmall', 'simlarge', 'native'],
+    notes = """KVM + Classic : All Sizes + 1 cpu
+               KVM + MESI_Two_Level: All Sizes + [1, 2, 8] cpu
+               Timing + Classic: simsmall + 1 cpu
+               Timing + MESI_Two_Level: simsmall + [1, 2] cpu"""
+)
+
+parsec_20_04_params = SimpleNamespace(
+    kernels = ['5.4.51'],
     cpu_types = ['kvm', 'timing'],
     mem_sys = ['classic', 'MESI_Two_Level'],
     num_cpus = ['1', '2', '8'],
@@ -80,6 +95,7 @@ name_params_map = {
     'npb': npb_params,
     'gapbs': gapbs_params,
     'parsec': parsec_params,
+    'parsec-20.04': parsec_20_04_params,
     'spec-2006': spec_2006_params,
     'spec-2017': spec_2017_params
 }

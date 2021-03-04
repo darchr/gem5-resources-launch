@@ -34,26 +34,34 @@ cd ../../
 
 
 # build X86
-print_info "building X86/gem5.opt"
-yes | /usr/bin/env python3 $(which scons) build/X86/gem5.opt -j256;
+if [ ! -f "build/X86/gem5.opt" ]; then
+    print_info "building X86/gem5.opt";
+    yes | /usr/bin/env python3 $(which scons) build/X86/gem5.opt -j256;
+fi
 
 # build X86_MOESI_CMP_directory
-print_info "building X86_MI_example"
-echo "TARGET_ISA = 'x86'" > build_opts/X86_MI_example;
-echo "CPU_MODELS = 'AtomicSimpleCPU,O3CPU,TimingSimpleCPU'" >> build_opts/X86_MI_example;
-echo "PROTOCOL = 'MI_example'" >> build_opts/X86_MI_example;
-yes | /usr/bin/env python3 $(which scons) build/X86_MI_example/gem5.opt -j256;
+if [ ! -f "build/X86_MI_example/gem5.opt" ]; then 
+    print_info "building X86_MI_example/gem5.opt";
+    echo "TARGET_ISA = 'x86'" > build_opts/X86_MI_example;
+    echo "CPU_MODELS = 'AtomicSimpleCPU,O3CPU,TimingSimpleCPU'" >> build_opts/X86_MI_example;
+    echo "PROTOCOL = 'MI_example'" >> build_opts/X86_MI_example;
+    yes | /usr/bin/env python3 $(which scons) build/X86_MI_example/gem5.opt -j256;
+fi
 
 # build X86_MESI_Two_Level
-print_info "building X86_MESI_Two_Level/gem5.opt"
-yes | /usr/bin/env python3 $(which scons) build/X86_MESI_Two_Level/gem5.opt -j256;
+if [ ! -f "build/X86_MESI_Two_Level/gem5.opt" ]; then
+    print_info "building X86_MESI_Two_Level/gem5.opt";
+    yes | /usr/bin/env python3 $(which scons) build/X86_MESI_Two_Level/gem5.opt -j256;
+fi
 
 # build X86_MOESI_CMP_directory
-print_info "building X86_MOESI_CMP_directory"
-echo "TARGET_ISA = 'x86'" > build_opts/X86_MOESI_CMP_directory;
-echo "CPU_MODELS = 'AtomicSimpleCPU,O3CPU,TimingSimpleCPU'" >> build_opts/X86_MOESI_CMP_directory;
-echo "PROTOCOL = 'MOESI_CMP_directory'" >> build_opts/X86_MOESI_CMP_directory;
-yes | /usr/bin/env python3 $(which scons) build/X86_MOESI_CMP_directory/gem5.opt -j256;
+if [ ! -f "build/X86_MOESI_CMP_directory/gem5.opt" ]; then
+    print_info "building X86_MOESI_CMP_directory/gem5.opt";
+    echo "TARGET_ISA = 'x86'" > build_opts/X86_MOESI_CMP_directory;
+    echo "CPU_MODELS = 'AtomicSimpleCPU,O3CPU,TimingSimpleCPU'" >> build_opts/X86_MOESI_CMP_directory;
+    echo "PROTOCOL = 'MOESI_CMP_directory'" >> build_opts/X86_MOESI_CMP_directory;
+    yes | /usr/bin/env python3 $(which scons) build/X86_MOESI_CMP_directory/gem5.opt -j256;
+fi
 
 
 
@@ -173,7 +181,7 @@ fi
 cd ..
 
 cd disk-images
-if [ ! -f "parsec.20.04" ] ; then
+if [ ! -f "parsec-20.04" ] ; then
     print_info "building parsec disk image (Ubuntu 20.04)";
     cd ../gem5-resources/src/parsec;
     ln -s ../../../gem5 gem5;
@@ -183,7 +191,7 @@ if [ ! -f "parsec.20.04" ] ; then
     rm packer_1.6.5_linux_amd64.zip;
     cp ../../../../parsec-20.04.json ./parsec/parsec-20.04.json;
     ./packer build parsec/parsec-20.04.json;
-    cp parsec/parsec.20.04-image/parsec.20.04 ../../../../disk-images/;
+    cp parsec/parsec-20.04-image/parsec-20.04 ../../../../disk-images/;
     cd ../../../../disk-images;
 fi
 cd ..
