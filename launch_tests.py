@@ -350,6 +350,6 @@ if __name__ == "__main__":
             f.write(str(job))
             f.write("\n")
     jobs = get_jobs_iterator()
-    #with mp.Pool(mp.cpu_count() // 2) as pool:
-    #    pool.map(worker, jobs)
+    with mp.Pool(mp.cpu_count() // 2) as pool:
+        pool.map(worker, jobs)
 
