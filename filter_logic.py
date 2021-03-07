@@ -11,8 +11,6 @@ def universal_filter(params):
 
 # https://www.gem5.org/documentation/benchmark_status/#boot-tests
 def boot_filter(params):
-    if params['cpu'] == "atomic" and not params['num_cpu'] == "1":
-        return False
     return True
 
 def npb_filter(params):
@@ -105,7 +103,9 @@ def workload_filter(name, params):
 
     if not name == "boot-exit":
         return False
-    if not params['cpu'] == 'o3':
+    if not params['cpu'] == 'atomic':
+        return False
+    if params['num_cpu'] == '1':
         return False
 
     return tests_filters_map[name](params) and universal_filter(params)
