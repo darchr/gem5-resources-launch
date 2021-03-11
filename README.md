@@ -3,6 +3,13 @@ This repo contains a set of scripts to set up and launch/test all full system
 resources. The scripts are capable of filtering out runs of specific
 characteristics (e.g. only run with kvm, etc.).
 
+## Cloning the repo
+This repo contains a submodule, so the repo should be cloned recursively.
+
+```sh
+git clone https://github.com/darchr/gem5-resources-launch --recursive
+```
+
 ## Set up the repo
 ```sh
 ./setup.sh
