@@ -14,16 +14,14 @@ experiments_repo = Artifact.registerArtifact(
 # gem5 artifacts
 gem5_repo = Artifact.registerArtifact(
     command = '''git clone https://gem5.googlesource.com/public/gem5
-                 git checkout v20.1.0.3
-                 git fetch https://gem5.googlesource.com/public/gem5 refs/changes/94/41594/3 && git cherry-pick FETCH_HEAD''',
+                 git checkout release-staging-v21-0''',
     typ = 'git repo',
     name = 'gem5',
     path =  'gem5/',
     cwd = './',
-    documentation = '''Cloned gem5 from googlesource, checked out the v20.1.0.3 tag and cherry-picked the scons 4 hotfix.
-                       Note that at the time of running this experiment, the scons 4 hotfix has not been merged, thus the cherry-picking change.
-                       The HEAD commit is: eab8ae6eafa6caa730d714aa72741e1dabf99fb6
-                       Change-Id: I3817f39ebc3021fb6fc89bcd09a96999f8ca2841'''
+    documentation = '''Cloned gem5 from googlesource, checked out the release-staging-v21-0 branch.
+                       The HEAD commit is: cf1659a0c82adfdd0ab9cca7d7aaa31d42c2d8e2
+                       Change-Id: I6009d72db0c103b5724d1ba7e20c0bd4a2b761e5'''
 )
 
 m5_binary = Artifact.registerArtifact(
@@ -49,9 +47,9 @@ gem5_binaries = {
                 path =  f'gem5/build/X86_{mem}/gem5.opt',
                 inputs = [gem5_repo,],
                 documentation = f'gem5 {mem} binary based on '
-                    'gem5 v20.1.0.3 and cherry-picked scons 4 hotfix'
-                    'The HEAD commit is: eab8ae6eafa6caa730d714aa72741e1dabf99fb6'
-                    'Change-Id: I3817f39ebc3021fb6fc89bcd09a96999f8ca2841'
+                    'gem5 release-staging-v21-0 branch'
+                    'The HEAD commit is: cf1659a0c82adfdd0ab9cca7d7aaa31d42c2d8e2'
+                    'Change-Id: I6009d72db0c103b5724d1ba7e20c0bd4a2b761e5'
                 )
         for mem in ruby_mem_types
 }

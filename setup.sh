@@ -19,10 +19,10 @@ print_info() {
 if [ ! -d "$GEM5_FOLDER" ] ; then
     print_info "cloning gem5"
     git clone https://gem5.googlesource.com/public/gem5;
-    git checkout v20.1.0.4;
 fi
-cd gem5
-
+cd gem5;
+git pull;
+git checkout release-staging-v21-0;
 
 
 # build m5

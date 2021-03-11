@@ -13,6 +13,7 @@ import input_space
 from gem5art.artifact.artifact import Artifact
 from gem5art.run import gem5Run
 
+import argparse
 
 ABS_PATH = pathlib.Path(__file__).parent.absolute()
 
@@ -22,7 +23,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:03/07/2021;gem5art-status;v20.1.0.4;boot-exit-atomic;patch005"
+RUN_NAME_SUFFIX = "launched:03/11/2021;gem5art-status;v21-staging;boot-exit;lavandula-pedunculata"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -344,12 +345,17 @@ def worker(job):
         traceback.print_exc(file=open(filepath, "w"))
 
 if __name__ == "__main__":
+    parser = parser = argparse.ArgumentParser(description='Launch gem5art experiment.')
+    parser.add_argument('--test', action='store_true', default = False)
+    args = parser.parse_args()
+
     jobs = get_jobs_iterator()
     with open('jobs', 'w') as f:
         for job in jobs:
             f.write(str(job))
             f.write("\n")
-    jobs = get_jobs_iterator()
-    with mp.Pool(mp.cpu_count() // 3 * 2) as pool:
-        pool.map(worker, jobs)
+    if not args.test:
+        jobs = get_jobs_iterator()
+        with mp.Pool(mp.cpu_count() // 2) as pool:
+            pool.map(worker, jobs)
 
