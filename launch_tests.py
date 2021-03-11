@@ -17,7 +17,7 @@ import argparse
 
 ABS_PATH = pathlib.Path(__file__).parent.absolute()
 
-OUTPUT_FOLDER = "/projects/gem5/gem5-resources-20.1/"
+OUTPUT_FOLDER = "/projects/gem5/gem5-resources-21.0/"
 ERR_FOLDER = os.path.join(ABS_PATH, "error_logs/")
 GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
