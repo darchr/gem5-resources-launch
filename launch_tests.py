@@ -121,7 +121,7 @@ def create_boot_exit_fs_run(params):
     if cpu == "kvm":
         timeout = 12*60*60 # 12 hours
     else:
-        timeout = 24*60*60 # 1 day
+        timeout = 2*24*60*60 # 2 days
     assert(mem_sys in gem5_binaries)
 
     gem5run = gem5Run.createFSRun(
