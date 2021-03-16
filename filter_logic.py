@@ -66,8 +66,5 @@ tests_filters_map = {
     'spec-2017': spec2017_filter
 }
 
-def workload_filter(name, params):
-    if not name == "boot-exit":
-        return False
-
-    return tests_filters_map[name](params) and universal_filter(params)
+def workload_filter(name, params, custom_filter):
+    return custom_filter(name, params) and tests_filters_map[name](params) and universal_filter(params)

@@ -36,58 +36,51 @@ def get_boot_exit_jobs_iterator():
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.num_cpus, params.boot_types):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'num_cpu', 'boot_type'], p)
-        if workload_filter(name, kwargs):
-            yield kwargs
+        yield kwargs
 
 def get_npb_jobs_iterator():
     name = 'npb'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.num_cpus, params.workloads):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'num_cpu', 'workload'], p)
-        if workload_filter(name, kwargs):
-            yield kwargs
+        yield kwargs
 
 def get_gapbs_jobs_iterator():
     name = 'gapbs'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.num_cpus, params.mem_sys, params.workloads, params.synthetic, params.n_nodes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'num_cpu', 'mem_sys', 'workload', 'synthetic', 'n_nodes'], p)
-        if workload_filter(name, kwargs):
-            yield kwargs
+        yield kwargs
 
 def get_parsec_jobs_iterator():
     name = 'parsec'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.num_cpus, params.workloads, params.sizes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'num_cpu', 'workload', 'size'], p)
-        if workload_filter(name, kwargs):
-            yield kwargs
+        yield kwargs
 
 def get_parsec_20_04_jobs_iterator():
     name = 'parsec-20.04'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.num_cpus, params.workloads, params.sizes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'num_cpu', 'workload', 'size'], p)
-        if workload_filter(name, kwargs):
-            yield kwargs
+        yield kwargs
 
 def get_spec_2006_jobs_iterator():
     name = 'spec-2006'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.mem_sys, params.workloads, params.sizes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'mem_sys', 'workload', 'size'], p)
-        if workload_filter(name, kwargs):
-            yield kwargs
+        yield kwargs
 
 def get_spec_2017_jobs_iterator():
     name = 'spec-2017'
     params = input_space.name_params_map[name]
     for p in cross_product(params.kernels, params.cpu_types, params.workloads, params.sizes):
         kwargs = lists_to_dict(['kernel', 'cpu', 'workload', 'size'], p)
-        if workload_filter(name, kwargs):
-            yield kwargs
+        yield kwargs
 
-def get_jobs_iterator():
+def get_jobs_iterator(custom_filter = lambda name, params: return True):
     iterators = [get_boot_exit_jobs_iterator(),
                  get_npb_jobs_iterator(),
                  get_gapbs_jobs_iterator(),
@@ -100,7 +93,8 @@ def get_jobs_iterator():
         while True:
             try:
                 kwargs = next(iterator)
-                yield (name, kwargs)
+                if workload_filter(name, kwargs, custom_filter):
+                    yield (name, kwargs)
             except StopIteration:
                 break
 
