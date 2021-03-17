@@ -23,7 +23,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:03/16/2021;gem5art-status;v21-staging;boot-exit;lavandula-pedunculata;patch-1"
+RUN_NAME_SUFFIX = "launched:03/16/2021;gem5art-status;v21-staging;boot-exit;lavandula-pedunculata;patch-2"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -179,6 +179,7 @@ def create_gapbs_fs_run(params):
         timeout = 24*60*60 # 1 day
     else:
         timeout = 3*24*60*60 # 3 days
+
     gem5run = gem5Run.createFSRun(
         'gapbs;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5_binary
@@ -276,6 +277,7 @@ def create_spec_2006_fs_run(params):
         timeout = 24*60*60 # 1 day
     else:
         timeout = 3*24*60*60 # 3 days
+
     gem5run = gem5Run.createFSRun(
         'spec-2006;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path(mem_sys), # gem5 binary
@@ -302,6 +304,7 @@ def create_spec_2017_fs_run(params):
         timeout = 24*60*60 # 1 day
     else:
         timeout = 3*24*60*60 # 3 days
+
     gem5run = gem5Run.createFSRun(
         'spec-2017;'+RUN_NAME_SUFFIX, # name
         get_gem5_binary_path('classic'), # gem5_binary
@@ -353,19 +356,44 @@ if __name__ == "__main__":
             return False
         return True
 
-    jobs = list(get_jobs_iterator(o3_filter))
-    jobs.append(create_boot_exit_fs_run({'kernel': '4.4.186', 'cpu': 'kvm', 'mem_sys': 'classic', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(create_boot_exit_fs_run({'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'classic', 'num_cpu': '4', 'boot_type': 'systemd'}))
-    jobs.append(create_boot_exit_fs_run({'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '2', 'boot_type': 'systemd'}))
-    jobs.append(create_boot_exit_fs_run({'kernel': '4.14.134', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(create_boot_exit_fs_run({'kernel': '4.19.83', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(create_boot_exit_fs_run({'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'MOESI_CMP_directory', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(create_boot_exit_fs_run({'kernel': '4.14.134', 'cpu': 'kvm', 'mem_sys': 'MOESI_CMP_directory', 'num_cpu': '4', 'boot_type': 'systemd'}))
+    #jobs = list(get_jobs_iterator(o3_filter))
+    jobs = []
+    jobs.append(("boot-exit", {'kernel': '4.4.186', 'cpu': 'kvm', 'mem_sys': 'classic', 'num_cpu': '8', 'boot_type': 'systemd'}))
+    jobs.append(("boot-exit", {'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'classic', 'num_cpu': '4', 'boot_type': 'systemd'}))
+    jobs.append(("boot-exit", {'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '2', 'boot_type': 'systemd'}))
+    jobs.append(("boot-exit", {'kernel': '4.14.134', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '8', 'boot_type': 'systemd'}))
+    jobs.append(("boot-exit", {'kernel': '4.19.83', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '8', 'boot_type': 'systemd'}))
+    jobs.append(("boot-exit", {'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'MOESI_CMP_directory', 'num_cpu': '8', 'boot_type': 'systemd'}))
+    jobs.append(("boot-exit", {'kernel': '4.14.134', 'cpu': 'kvm', 'mem_sys': 'MOESI_CMP_directory', 'num_cpu': '4', 'boot_type': 'systemd'}))
 
     with open('jobs', 'w') as f:
         for job in jobs:
             f.write(str(job))
             f.write("\n")
+
+    run_names = {name for name, _ in jobs}
+
+    # since disk image artifacts are huge, here we lazily import artifacts as needed
+    # we should do this before spliting the jobs to multiple processes as we don't want to import those artifacts multiple times
+    for name in run_names:
+        print("Loading {} artifacts".format(name))
+        if name == "boot-exit":
+            boot_exit_artifacts = get_boot_exit_artifacts()
+        elif name == "npb":
+            npb_artifacts = get_npb_artifacts()
+        elif name == "gapbs":
+            gapbs_artifacts = get_gapbs_artifacts()
+        elif name == "parsec":
+            parsec_artifacts = get_parsec_artifacts()
+        elif name == "parsec-20.04":
+            parsec_20_04_artifacts = get_parsec_20_04_artifacts()
+        elif name == "spec-2006":
+            spec_2006_artifacts = get_spec_2006_artifacts()
+        elif name == "spec-2017":
+            spec_2017_artifacts = get_spec_2017_artifacts()
+        else:
+            raise Error("Unknown fs run name")
+
     if not args.test:
         with mp.Pool(mp.cpu_count() // 2) as pool:
             pool.map(worker, jobs)
