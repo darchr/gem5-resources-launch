@@ -23,7 +23,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:03/16/2021;gem5art-status;v21-staging;boot-exit;lavandula-pedunculata;patch-2"
+RUN_NAME_SUFFIX = "launched:03/17/2021;gem5art-status;v21-staging;boot-exit;lavandula-viridis"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -135,7 +135,7 @@ def create_boot_exit_fs_run(params):
     )
     output_folder = os.path.join(OUTPUT_FOLDER, 'boot-exit/{}/{}/{}/{}/{}/'. format(kernel, cpu, num_cpu, mem_sys, boot_type))
     #assert(os.path.exists(os.path.join(output_folder, "../")))
-    assert(not os.path.exists(os.path.join(output_folder, "simout")))
+    #assert(not os.path.exists(os.path.join(output_folder, "simout")))
     return gem5run
 
 def create_npb_fs_run(params):
@@ -349,22 +349,12 @@ if __name__ == "__main__":
     parser.add_argument('--test', action='store_true', default = False)
     args = parser.parse_args()
 
-    def o3_filter(name, params):
+    def boot_exit_filter(name, params):
         if not name == "boot-exit":
-            return False
-        if not params["cpu"] == "o3":
             return False
         return True
 
-    #jobs = list(get_jobs_iterator(o3_filter))
-    jobs = []
-    jobs.append(("boot-exit", {'kernel': '4.4.186', 'cpu': 'kvm', 'mem_sys': 'classic', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(("boot-exit", {'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'classic', 'num_cpu': '4', 'boot_type': 'systemd'}))
-    jobs.append(("boot-exit", {'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '2', 'boot_type': 'systemd'}))
-    jobs.append(("boot-exit", {'kernel': '4.14.134', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(("boot-exit", {'kernel': '4.19.83', 'cpu': 'kvm', 'mem_sys': 'MI_example', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(("boot-exit", {'kernel': '4.9.186', 'cpu': 'kvm', 'mem_sys': 'MOESI_CMP_directory', 'num_cpu': '8', 'boot_type': 'systemd'}))
-    jobs.append(("boot-exit", {'kernel': '4.14.134', 'cpu': 'kvm', 'mem_sys': 'MOESI_CMP_directory', 'num_cpu': '4', 'boot_type': 'systemd'}))
+    jobs = list(get_jobs_iterator(boot_exit_filter))
 
     with open('jobs', 'w') as f:
         for job in jobs:
