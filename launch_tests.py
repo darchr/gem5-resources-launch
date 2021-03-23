@@ -23,7 +23,7 @@ GEM5_FOLDER = os.path.join(ABS_PATH, "gem5/")
 GEM5_RESOURCES_FOLDER = os.path.join(ABS_PATH, "gem5-resources/")
 DISK_IMAGES_FOLDER = os.path.join(ABS_PATH, "disk-images/")
 LINUX_KERNELS_FOLDER = os.path.join(ABS_PATH, "linux-kernels/")
-RUN_NAME_SUFFIX = "launched:03/17/2021;gem5art-status;v21-staging;boot-exit;lavandula-viridis"
+RUN_NAME_SUFFIX = "launched:03/17/2021;gem5art-status;v21-staging;boot-exit;lavandula-viridis;patch-1"
 
 def lists_to_dict(keys, vals):
     return dict(zip(keys, vals))
@@ -349,12 +349,18 @@ if __name__ == "__main__":
     parser.add_argument('--test', action='store_true', default = False)
     args = parser.parse_args()
 
-    def boot_exit_filter(name, params):
-        if not name == "boot-exit":
-            return False
-        return True
+    #def boot_exit_filter(name, params):
+    #    if not name == "boot-exit":
+    #        return False
+    #    return True
 
-    jobs = list(get_jobs_iterator(boot_exit_filter))
+    #jobs = list(get_jobs_iterator(boot_exit_filter))
+
+    jobs = []
+    jobs.append(("boot-exit", {"kernel": "4.9.186", "cpu": "kvm", "mem_sys": "MOESI_CMP_directory", "num_cpu": "4", "boot_type": "init"}))
+    jobs.append(("boot-exit", {"kernel": "4.14.134", "cpu": "kvm", "mem_sys": "MOESI_CMP_directory", "num_cpu": "1", "boot_type": "init"}))
+    jobs.append(("boot-exit", {"kernel": "4.14.134", "cpu": "kvm", "mem_sys": "MOESI_CMP_directory", "num_cpu": "1", "boot_type": "systemd"}))
+    jobs.append(("boot-exit", {"kernel": "5.4.49", "cpu": "kvm", "mem_sys": "MOESI_CMP_directory", "num_cpu": "2", "boot_type": "systemd"}))
 
     with open('jobs', 'w') as f:
         for job in jobs:
