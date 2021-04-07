@@ -29,7 +29,7 @@ def get_boot_exit_artifacts():
 
 def get_npb_artifacts():
     npb_disk_image = Artifact.registerArtifact(
-        command = '''wget http://dist.gem5.org/dist/v20-1/images/x86/ubuntu-18-04/npb.img.gz;
+        command = '''wget http://dist.gem5.org/dist/v21-0/images/x86/ubuntu-18-04/npb.img.gz;
                      gunzip npb.img.gz''',
         typ = 'disk image',
         name = 'npb-disk-image',
@@ -42,7 +42,7 @@ def get_npb_artifacts():
 
 def get_gapbs_artifacts():
     gapbs_disk_image = Artifact.registerArtifact(
-        command = '''wget http://dist.gem5.org/dist/v20-1/images/x86/ubuntu-18-04/gapbs.img.gz;
+        command = '''wget http://dist.gem5.org/dist/v21-0/images/x86/ubuntu-18-04/gapbs.img.gz;
                      gunzip gapbs.img.gz;''',
         typ = 'disk image',
         name = 'gapbs-disk-image',
@@ -55,7 +55,7 @@ def get_gapbs_artifacts():
 
 def get_parsec_artifacts():
     parsec_disk_image = Artifact.registerArtifact(
-        command = '''wget http://dist.gem5.org/dist/v20-1/images/x86/ubuntu-18-04/parsec.img.gz;
+        command = '''wget http://dist.gem5.org/dist/v21-0/images/x86/ubuntu-18-04/parsec.img.gz;
                      gunzip parsec.img.gz;''',
         typ = 'disk image',
         name = 'parsec-disk-image',

@@ -7,3 +7,4 @@ linux-kernels/
 results/
 packer
 run.sh
+gem5art/

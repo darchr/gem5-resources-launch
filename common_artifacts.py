@@ -15,14 +15,13 @@ experiments_repo = Artifact.registerArtifact(
 gem5_repo = Artifact.registerArtifact(
     command = '''git clone https://gem5.googlesource.com/public/gem5
                  cd gem5;
-                 git checkout release-staging-v21-0''',
+                 git checkout v21.0.0.0''',
     typ = 'git repo',
     name = 'gem5',
     path =  'gem5/',
     cwd = './',
-    documentation = '''Cloned gem5 from googlesource, checked out the release-staging-v21-0 branch.
-                       The HEAD commit is: cf1659a0c82adfdd0ab9cca7d7aaa31d42c2d8e2
-                       Change-Id: I6009d72db0c103b5724d1ba7e20c0bd4a2b761e5'''
+    documentation = '''Cloned gem5 from googlesource, checked out the v21.0.0.0 tag.
+                       The HEAD commit is: ea7d012c00e5555857ef999b88a8ec2bde801a1f'''
 )
 
 m5_binary = Artifact.registerArtifact(
@@ -40,7 +39,7 @@ ruby_mem_types = ['MI_example', 'MESI_Two_Level', 'MOESI_CMP_directory']
 gem5_binaries = {
         mem: Artifact.registerArtifact(
                 command = f'''cd gem5;
-                scons build/X86_{mem}/gem5.opt --default=X86 PROTOCOL={mem} -j256
+                scons build/X86_{mem}/gem5.opt --default=X86 PROTOCOL={mem} -j48
                 ''',
                 typ = 'gem5 binary',
                 name = f'gem5-{mem}',
@@ -48,25 +47,23 @@ gem5_binaries = {
                 path =  f'gem5/build/X86_{mem}/gem5.opt',
                 inputs = [gem5_repo,],
                 documentation = f'gem5 {mem} binary based on '
-                    'gem5 release-staging-v21-0 branch'
-                    'The HEAD commit is: cf1659a0c82adfdd0ab9cca7d7aaa31d42c2d8e2'
-                    'Change-Id: I6009d72db0c103b5724d1ba7e20c0bd4a2b761e5'
+                    'gem5 v21.0.0.0'
+                    'The HEAD commit is: ea7d012c00e5555857ef999b88a8ec2bde801a1f'
                 )
         for mem in ruby_mem_types
 }
 
 gem5_binaries['classic'] = Artifact.registerArtifact(
     command = f'''cd gem5;
-    scons build/X86/gem5.opt -j256
+    scons build/X86/gem5.opt -j48
     ''',
     typ = 'gem5 binary',
     name = f'gem5-classic',
     cwd = 'gem5/',
     path =  f'gem5/build/X86/gem5.opt',
     inputs = [gem5_repo],
-    documentation = 'gem5 binary based on gem5 v20.1.0.3 and cherry-picked scons 4 hotfix'
-    'The HEAD commit is: eab8ae6eafa6caa730d714aa72741e1dabf99fb6'
-    'Change-Id: eab8ae6eafa6caa730d714aa72741e1dabf99fb6'
+    documentation = 'gem5 binary based on gem5 v21.0.0.0'
+    'The HEAD commit is: ea7d012c00e5555857ef999b88a8ec2bde801a1f'
 )
 # ---
 
@@ -78,7 +75,7 @@ linux_binaries = {
                 typ = 'kernel',
                 path = f'linux-kernels/vmlinux-{version}',
                 cwd = 'linux-kernels/',
-                command = f'''wget http://dist.gem5.org/dist/v20-1/kernels/x86/static/vmlinux-{version}''',
+                command = f'''wget http://dist.gem5.org/dist/v21-0/kernels/x86/static/vmlinux-{version}''',
                 inputs = [experiments_repo],
                 documentation = f"Kernel binary for {version} with simple "
                                  "config file",
@@ -87,59 +84,61 @@ linux_binaries = {
 }
 # ---
 
+
 # manually compiled Linux kernels
-linux_versions = ['5.4.51', '4.15.18']
-linux_git_artifact = {}
-linux_git_artifact['5.4.51'] = Artifact.registerArtifact(
-    name = f"linux kernel version 5.4.51 git repo",
-    typ = "git repo",
-    path = "linux-kernels/linux-5.4.51",
-    cwd = "./linux-kernels",
-    command = """
-        git clone --branch v5.4.51 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.51;
-    """,
-    documentation = f"linux kernel version 5.4.51 source code"
-)
+#linux_versions = ['5.4.51', '4.15.18']
+#linux_git_artifact = {}
+#linux_git_artifact['5.4.51'] = Artifact.registerArtifact(
+#    name = f"linux kernel version 5.4.51 git repo",
+#    typ = "git repo",
+#    path = "linux-kernels/linux-5.4.51",
+#    cwd = "./linux-kernels",
+#    command = """
+#        git clone --branch v5.4.51 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.51;
+#    """,
+#    documentation = f"linux kernel version 5.4.51 source code"
+#)
+#
+#linux_binaries['5.4.51'] = Artifact.registerArtifact(
+#    name = f'vmlinux-5.4.51',
+#    typ = 'kernel',
+#    path = f'linux-kernels/vmlinux-5.4.51',
+#    cwd = 'linux-kernels',
+#    command = '''
+#    cd linux-5.4.51;
+#    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.5.4.51 .config;
+#    yes '' | make oldconfig;
+#    make -j 32;
+#    cp vmlinux ../vmlinux-5.4.51;
+#    ''',
+#    inputs = [experiments_repo, linux_git_artifact['5.4.51']],
+#    documentation = f"Kernel binary for 5.4.51 with a simple config file"
+#)
+#
+#linux_git_artifact['4.15.18'] = Artifact.registerArtifact(
+#    name = f"linux kernel version 4.15.18 git repo",
+#    typ = "git repo",
+#    path = "linux-kernels/linux-4.15.18",
+#    cwd = "./linux-kernels",
+#    command = """
+#        git clone --branch v4.15.18 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.15.18;
+#    """,
+#    documentation = f"linux kernel version 4.15.18 source code"
+#)
+#
+#linux_binaries['4.15.18'] = Artifact.registerArtifact(
+#    name = f'vmlinux-4.15.18',
+#    typ = 'kernel',
+#    path = f'linux-kernels/vmlinux-4.15.18',
+#    cwd = 'linux-kernels',
+#    command = '''
+#    cd linux-4.15.18;
+#    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.4.9.186 .config;
+#    yes '' | make oldconfig;
+#    make -j 32;
+#    cp vmlinux ../vmlinux-4.15.18
+#    ''',
+#    inputs = [experiments_repo, linux_git_artifact['4.15.18']],
+#    documentation = f"Kernel binary for 4.15.18 with a simple config file"
+#)
 
-linux_binaries['5.4.51'] = Artifact.registerArtifact(
-    name = f'vmlinux-5.4.51',
-    typ = 'kernel',
-    path = f'linux-kernels/vmlinux-5.4.51',
-    cwd = 'linux-kernels',
-    command = '''
-    cd linux-5.4.51;
-    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.5.4.51 .config;
-    yes '' | make oldconfig;
-    make -j 32;
-    cp vmlinux ../vmlinux-5.4.51;
-    ''',
-    inputs = [experiments_repo, linux_git_artifact['5.4.51']],
-    documentation = f"Kernel binary for 5.4.51 with a simple config file"
-)
-
-linux_git_artifact['4.15.18'] = Artifact.registerArtifact(
-    name = f"linux kernel version 4.15.18 git repo",
-    typ = "git repo",
-    path = "linux-kernels/linux-4.15.18",
-    cwd = "./linux-kernels",
-    command = """
-        git clone --branch v4.15.18 --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.15.18;
-    """,
-    documentation = f"linux kernel version 4.15.18 source code"
-)
-
-linux_binaries['4.15.18'] = Artifact.registerArtifact(
-    name = f'vmlinux-4.15.18',
-    typ = 'kernel',
-    path = f'linux-kernels/vmlinux-4.15.18',
-    cwd = 'linux-kernels',
-    command = '''
-    cd linux-4.15.18;
-    cp ../../gem5-resources/src/linux-kernel/linux-configs/config.4.9.186 .config;
-    yes '' | make oldconfig;
-    make -j 32;
-    cp vmlinux ../vmlinux-4.15.18
-    ''',
-    inputs = [experiments_repo, linux_git_artifact['4.15.18']],
-    documentation = f"Kernel binary for 4.15.18 with a simple config file"
-)
